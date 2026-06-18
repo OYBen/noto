@@ -43,11 +43,11 @@ public final class ModernProtegeTheme {
 
     public static final Color TEXT = new Color(14, 18, 20);
 
-    public static final Color MUTED_TEXT = new Color(45, 58, 54);
+    public static final Color MUTED_TEXT = new Color(58, 72, 68);
 
-    public static final Color SELECTION = new Color(18, 95, 75);
+    public static final Color SELECTION = new Color(79, 127, 112);
 
-    public static final Color SELECTION_SOFT = new Color(213, 232, 226);
+    public static final Color SELECTION_SOFT = new Color(224, 239, 234);
 
     public static final Color CONTROL_HOVER = new Color(239, 245, 242);
 
@@ -57,7 +57,7 @@ public final class ModernProtegeTheme {
 
     public static final Color MENU_BAR_FOREGROUND = new Color(244, 246, 245);
 
-    public static final Color MENU_BAR_SELECTION = new Color(39, 48, 44);
+    public static final Color MENU_BAR_SELECTION = new Color(48, 61, 56);
 
     public static final Color MENU_POPUP_BACKGROUND = new Color(252, 253, 252);
 
@@ -69,23 +69,23 @@ public final class ModernProtegeTheme {
 
     public static final Color DANGER = new Color(154, 83, 76);
 
-    public static final Color SUCCESS = new Color(42, 120, 84);
+    public static final Color SUCCESS = new Color(82, 143, 106);
 
-    public static final Color INFO = new Color(58, 118, 104);
+    public static final Color INFO = new Color(88, 139, 126);
 
-    private static final Color MORANDI_STONE = new Color(56, 75, 68);
+    private static final Color MORANDI_STONE = new Color(93, 116, 109);
 
-    private static final Color MORANDI_MAUVE = new Color(67, 83, 76);
+    private static final Color MORANDI_MAUVE = new Color(104, 124, 117);
 
-    private static final Color MORANDI_OLIVE = new Color(73, 88, 70);
+    private static final Color MORANDI_OLIVE = new Color(112, 128, 102);
 
-    private static final Color MORANDI_SAGE = new Color(48, 82, 67);
+    private static final Color MORANDI_SAGE = new Color(79, 127, 112);
 
-    private static final Color MORANDI_BLUE = new Color(54, 78, 73);
+    private static final Color MORANDI_BLUE = new Color(87, 121, 117);
 
-    private static final Color MORANDI_TEAL = new Color(43, 83, 74);
+    private static final Color MORANDI_TEAL = new Color(76, 128, 121);
 
-    private static final Color MORANDI_CLAY = new Color(78, 84, 72);
+    private static final Color MORANDI_CLAY = new Color(119, 126, 104);
 
     private ModernProtegeTheme() {
     }

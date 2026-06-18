@@ -225,7 +225,7 @@ public class WorkspaceFrame extends JFrame {
     }
 
     private java.util.List<Image> createFrameIcons() {
-        String[] iconNames = {"protege-icon-16.png", "protege-icon-32.png", "protege-icon-48.png", "protege-icon-128.png"};
+        String[] iconNames = {"protege-light-icon-16.png", "protege-light-icon-32.png", "protege-light-icon-48.png", "protege-light-icon-128.png"};
         java.util.List<Image> images = new java.util.ArrayList<>();
         for (String iconName : iconNames) {
             Icon icon = Icons.getIcon(iconName);
