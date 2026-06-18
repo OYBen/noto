@@ -56,6 +56,7 @@ public class WorkspaceFrame extends JFrame {
     public WorkspaceFrame(Workspace workspace) {
         this.workspace = workspace;
         menuActions = new HashSet<>();
+        installDarkWindowChrome();
         createUI();
         restoreMetrics();
         addWindowListener(new WindowAdapter() {
@@ -74,6 +75,20 @@ public class WorkspaceFrame extends JFrame {
                 workspace.handleActivated();
             }
         });
+    }
+
+
+    private void installDarkWindowChrome() {
+        if (OSUtils.isOSX()) {
+            return;
+        }
+        setUndecorated(true);
+        JRootPane rootPane = getRootPane();
+        rootPane.setWindowDecorationStyle(JRootPane.FRAME);
+        rootPane.putClientProperty("JRootPane.titleBarBackground", ModernProtegeTheme.TITLE_BAR_BACKGROUND);
+        rootPane.putClientProperty("JRootPane.titleBarForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+        rootPane.putClientProperty("JRootPane.titleBarInactiveBackground", ModernProtegeTheme.TITLE_BAR_BACKGROUND);
+        rootPane.putClientProperty("JRootPane.titleBarInactiveForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
     }
 
 
