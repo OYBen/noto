@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.util;
 
 
 import org.eclipse.core.runtime.IExtension;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -41,8 +42,7 @@ public class ComponentFactory {
 
     public static JToolBar createViewToolBar() {
         JToolBar toolBar = new JToolBar();
-        toolBar.setFloatable(false);
-        toolBar.setBorderPainted(false);
+        ModernProtegeTheme.tuneToolbar(toolBar);
         return toolBar;
     }
 

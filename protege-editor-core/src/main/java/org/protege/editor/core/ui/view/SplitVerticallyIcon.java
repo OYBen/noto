@@ -26,14 +26,13 @@ public class SplitVerticallyIcon extends ViewBarIcon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(Color.WHITE);
+        Graphics2D g2 = ModernProtegeTheme.iconGraphics(g);
+        g2.translate(x, y);
         int width = getIconWidth();
         int height = getIconHeight();
-        g2.drawRect(1, 1, width - 2, height - 2);
-        g2.drawLine(width / 2 - 1, 1, width / 2 - 1, height - 1);
-        g2.drawLine(width / 2, 1, width / 2, height - 1);
-        g2.drawLine(width / 2 + 1, 1, width / 2 + 1, height - 1);
+        g2.drawRoundRect(2, 2, width - 4, height - 4, 3, 3);
+        g2.drawLine(width / 2, 3, width / 2, height - 3);
+        g2.dispose();
     }
 
 

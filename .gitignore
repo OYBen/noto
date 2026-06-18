@@ -1,5 +1,7 @@
 # Maven
 target/
+.mvn-settings-protege.xml
+.out/
 
 # Eclipse
 .classpath

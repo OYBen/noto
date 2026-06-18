@@ -45,6 +45,13 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>3.7.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>com.google.auto.value</groupId>
 			<artifactId>auto-value-annotations</artifactId>
 		</dependency>
@@ -99,12 +106,15 @@
 							!com.jgoodies.looks.plastic.icons.*,
 							org.coode.mdock.*,
 							com.jgoodies.*,
+							com.formdev.flatlaf.*,
 							gnu.trove.*
 						</_exportcontents>
 						<Import-Package>
 							!com.sun.*,
 							!com.apple.*,
-							!sun.swing,
+							!javafx.*,
+							!net.miginfocom.*,
+							!sun.*,
 							org.eclipse.core.runtime;registry="split",
 							*
 						</Import-Package>

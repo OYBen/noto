@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.list;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -13,7 +15,7 @@ import java.awt.event.ActionListener;
 public class MListAddButton extends MListButton {
 
     public MListAddButton(ActionListener actionListener) {
-        super("Add", Color.GREEN.darker(), actionListener);
+        super("Add", ModernProtegeTheme.SUCCESS, actionListener);
     }
 
 
@@ -28,8 +30,8 @@ public class MListAddButton extends MListButton {
         int insetY = size / 4;
         int insetHeight = size / 2;
         int insetWidth = size / 2;
-        g.fillRect(x + size / 2  - thickness / 2, y + insetY, thickness, insetHeight);
-        g.fillRect(x + insetX, y + size / 2 - thickness / 2, insetWidth, thickness);
+        g.drawLine(x + size / 2, y + insetY, x + size / 2, y + insetY + insetHeight);
+        g.drawLine(x + insetX, y + size / 2, x + insetX + insetWidth, y + size / 2);
     }
 
     @Override

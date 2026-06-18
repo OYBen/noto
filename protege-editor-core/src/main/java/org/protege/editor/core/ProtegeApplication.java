@@ -21,6 +21,7 @@ import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ErrorMessage;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
@@ -250,6 +252,7 @@ public class ProtegeApplication implements BundleActivator {
 
     protected ProtegeApplication initApplication() throws Exception {
         try {
+            applyTextRenderingSystemProperties();
             PluginUtilities.getInstance().initialise(context);
             loadDefaults();
             initializeLookAndFeel();
@@ -262,16 +265,23 @@ public class ProtegeApplication implements BundleActivator {
         return this;
     }
 
+    private static void applyTextRenderingSystemProperties() {
+        if (!OSUtils.isOSX()) {
+            System.setProperty("awt.useSystemAAFontSettings", "lcd_hrgb");
+            System.setProperty("swing.aatext", "true");
+        }
+    }
+
 
     private static void loadDefaults() {
-        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "CFA500"); //"CCA33D"
-        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "0079BA");
-        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "0079BA");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "38A14A");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "874B82");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "6B47A2");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "D17A00");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "AD3B45");
+        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "918B68");
+        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "6F8294");
+        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "6F8294");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "7A8B7B");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "897484");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "7B8587");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "917067");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "A8645F");
 
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
@@ -309,11 +319,15 @@ public class ProtegeApplication implements BundleActivator {
                 defaultLAFClassName = UIManager.getSystemLookAndFeelClassName();
             }
             else {
-                defaultLAFClassName = ProtegeProperties.PLASTIC_LAF_NAME;
+                defaultLAFClassName = ProtegeProperties.FLAT_LIGHT_LAF_NAME;
             }
 
             Preferences p = PreferencesManager.getInstance().getApplicationPreferences(LOOK_AND_FEEL_KEY);
             String lafClsName = p.getString(LOOK_AND_FEEL_CLASS_NAME, defaultLAFClassName);
+            if (ProtegeProperties.PLASTIC_LAF_NAME.equals(lafClsName)) {
+                lafClsName = ProtegeProperties.FLAT_LIGHT_LAF_NAME;
+                p.putString(LOOK_AND_FEEL_CLASS_NAME, lafClsName);
+            }
 
             try {
                 // This is a workaround for some OSGi "feature".  From here http://adamish.com/blog/archives/156.
@@ -330,9 +344,12 @@ public class ProtegeApplication implements BundleActivator {
                 }
                 else {
                     // Now set the class loader for Component UI loading to this one.  Works for non Plastic LAFs.
-                    UIManager.put("ClassLoader", this.getClass().getClassLoader());
-                    UIManager.setLookAndFeel(lafClsName);
+                    ClassLoader classLoader = this.getClass().getClassLoader();
+                    UIManager.put("ClassLoader", classLoader);
+                    LookAndFeel lookAndFeel = (LookAndFeel) Class.forName(lafClsName, true, classLoader).newInstance();
+                    UIManager.setLookAndFeel(lookAndFeel);
                 }
+                logger.info("Look&Feel: {} ({})", UIManager.getLookAndFeel().getName(), UIManager.getLookAndFeel().getClass().getName());
                 setupDefaults(defaults, lafClsName);
 
             } catch (Exception e) {
@@ -346,7 +363,12 @@ public class ProtegeApplication implements BundleActivator {
 
         defaults.put("TabbedPaneUI", CloseableTabbedPaneUI.class.getName());
 
-        Color borderColor = new Color(220, 220, 220);
+        boolean flatLookAndFeel = lafClassName.startsWith("com.formdev.flatlaf.");
+
+        Color borderColor = flatLookAndFeel ? ModernProtegeTheme.BORDER : new Color(220, 220, 220);
+        Color controlBackground = flatLookAndFeel ? ModernProtegeTheme.APP_BACKGROUND : Color.WHITE;
+        Color selectionBackground = flatLookAndFeel ? ModernProtegeTheme.SELECTION : defaults.getColor("List.selectionBackground");
+        Color selectionForeground = flatLookAndFeel ? Color.WHITE : defaults.getColor("List.selectionForeground");
 
         MatteBorder commonBorder = BorderFactory.createMatteBorder(1, 1, 1, 1, borderColor);
 
@@ -363,13 +385,99 @@ public class ProtegeApplication implements BundleActivator {
 
         defaults.put("TitledBorder.border", commonBorder);
 
+        if (flatLookAndFeel) {
+            defaults.put("Button.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("Component.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("ProgressBar.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("TextComponent.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("TextField.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("FormattedTextField.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("PasswordField.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("ComboBox.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("Spinner.arc", ModernProtegeTheme.CORNER_RADIUS);
+            defaults.put("PopupMenu.borderCornerRadius", 12);
+            defaults.put("Component.focusWidth", 1);
+            defaults.put("Component.innerFocusWidth", 0);
+            defaults.put("Component.borderWidth", 1);
+            defaults.put("Component.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("Button.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("ComboBox.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("TextField.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("FormattedTextField.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("PasswordField.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("Spinner.minimumHeight", ModernProtegeTheme.CONTROL_HEIGHT);
+            defaults.put("Component.focusColor", ModernProtegeTheme.SELECTION);
+            defaults.put("Component.borderColor", borderColor);
+            defaults.put("Component.disabledBorderColor", ModernProtegeTheme.blend(borderColor, controlBackground, 0.45f));
+            defaults.put("Button.background", ModernProtegeTheme.SURFACE);
+            defaults.put("Button.hoverBackground", ModernProtegeTheme.CONTROL_HOVER);
+            defaults.put("Button.pressedBackground", ModernProtegeTheme.SELECTION_SOFT);
+            defaults.put("Button.borderColor", borderColor);
+            defaults.put("TextField.background", ModernProtegeTheme.SURFACE);
+            defaults.put("TextField.border", ModernProtegeTheme.roundedTextBorder());
+            defaults.put("FormattedTextField.border", ModernProtegeTheme.roundedTextBorder());
+            defaults.put("PasswordField.border", ModernProtegeTheme.roundedTextBorder());
+            defaults.put("ComboBox.background", ModernProtegeTheme.SURFACE);
+            defaults.put("ComboBox.buttonBackground", ModernProtegeTheme.SURFACE_ALT);
+            defaults.put("ComboBox.border", ModernProtegeTheme.roundedTextBorder());
+            defaults.put("Spinner.border", ModernProtegeTheme.roundedTextBorder());
+            defaults.put("TextArea.background", ModernProtegeTheme.SURFACE);
+            defaults.put("EditorPane.background", ModernProtegeTheme.SURFACE);
+            defaults.put("TextPane.background", ModernProtegeTheme.SURFACE);
+            defaults.put("Label.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("Button.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("TextField.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("FormattedTextField.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("PasswordField.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("TextArea.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("EditorPane.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("TextPane.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("ComboBox.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("Tree.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("List.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("Table.foreground", ModernProtegeTheme.TEXT);
+            defaults.put("TabbedPane.tabSeparatorsFullHeight", true);
+            defaults.put("TabbedPane.showTabSeparators", true);
+            defaults.put("TabbedPane.tabHeight", ModernProtegeTheme.TAB_HEIGHT);
+            defaults.put("TabbedPane.tabInsets", new Insets(6, 12, 6, 12));
+            defaults.put("TabbedPane.tabAreaInsets", new Insets(3, 4, 0, 4));
+            defaults.put("ToolBar.background", controlBackground);
+            defaults.put("ToolBar.height", ModernProtegeTheme.TOOLBAR_HEIGHT);
+            defaults.put("ToolBar.separatorColor", borderColor);
+            defaults.put("ScrollBar.width", 12);
+            defaults.put("ScrollBar.thumbArc", 999);
+            defaults.put("ScrollBar.trackArc", 999);
+            defaults.put("Table.gridColor", borderColor);
+            defaults.put("Table.background", ModernProtegeTheme.SURFACE);
+            defaults.put("Table.rowHeight", ModernProtegeTheme.ROW_HEIGHT);
+            defaults.put("Table.intercellSpacing", new Dimension(0, 1));
+            defaults.put("Table.selectionBackground", selectionBackground);
+            defaults.put("Table.selectionForeground", selectionForeground);
+            defaults.put("Table.showHorizontalLines", true);
+            defaults.put("Table.showVerticalLines", false);
+            defaults.put("Tree.selectionBackground", selectionBackground);
+            defaults.put("Tree.selectionForeground", selectionForeground);
+            defaults.put("Tree.rowHeight", ModernProtegeTheme.ROW_HEIGHT);
+            defaults.put("List.selectionBackground", selectionBackground);
+            defaults.put("List.selectionForeground", selectionForeground);
+            defaults.put("List.background", ModernProtegeTheme.SURFACE);
+            defaults.put("List.cellHeight", ModernProtegeTheme.ROW_HEIGHT);
+            defaults.put("Panel.background", controlBackground);
+            defaults.put("Viewport.background", ModernProtegeTheme.SURFACE);
+            defaults.put("Menu.selectionBackground", ModernProtegeTheme.SELECTION_SOFT);
+            defaults.put("Menu.selectionForeground", ModernProtegeTheme.TEXT);
+            defaults.put("MenuItem.selectionBackground", ModernProtegeTheme.SELECTION_SOFT);
+            defaults.put("MenuItem.selectionForeground", ModernProtegeTheme.TEXT);
+            applySharpTextRenderingDefaults(defaults);
+        }
+
         Preferences rendererPrefs = PreferencesManager.getInstance().getApplicationPreferences(
                 "org.protege.editor.owl.ui.renderer.OWLRendererPreferences"
         );
 
-        defaults.put("Tree.paintLines", true);
-        defaults.put("Tree.drawVerticalLines", true);
-        defaults.put("Tree.drawHorizontalLines", true);
+        defaults.put("Tree.paintLines", !flatLookAndFeel);
+        defaults.put("Tree.drawVerticalLines", !flatLookAndFeel);
+        defaults.put("Tree.drawHorizontalLines", !flatLookAndFeel);
         // Set the color for non-Protege LAFS - the line color is too light for the dotted LAF.
         if (!ProtegeProperties.PLASTIC_LAF_NAME.equals(lafClassName)) {
             defaults.put("Tree.hash", new Color(230, 230, 230));
@@ -378,6 +486,63 @@ public class ProtegeApplication implements BundleActivator {
 
         int fontSize = rendererPrefs.getInt("FONT_SIZE", 12);
         Fonts.updateUIDefaultsFontSize(fontSize);
+        if (flatLookAndFeel) {
+            applyModernFonts(Math.max(fontSize, 13));
+        }
+    }
+
+    private static void applyModernFonts(int fontSize) {
+        FontUIResource appFont = createModernFont(fontSize);
+        FontUIResource menuFont = createModernFont(fontSize + 2);
+        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+        defaults.keySet().stream()
+                .filter(key -> key instanceof String && ((String) key).endsWith(".font"))
+                .forEach(key -> UIManager.put(key, appFont));
+        UIManager.put("Menu.font", menuFont);
+        UIManager.put("MenuItem.font", menuFont);
+        UIManager.put("CheckBoxMenuItem.font", menuFont);
+        UIManager.put("RadioButtonMenuItem.font", menuFont);
+    }
+
+    private static void applySharpTextRenderingDefaults(UIDefaults defaults) {
+        Map<RenderingHints.Key, Object> desktopHints = new HashMap<>();
+        desktopHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        desktopHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        desktopHints.put(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
+        desktopHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        defaults.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        defaults.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        defaults.put(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
+        defaults.put("awt.font.desktophints", desktopHints);
+    }
+
+    private static FontUIResource createModernFont(int size) {
+        String[] latinFontFamilies = {"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", Font.SANS_SERIF};
+        String[] cjkFontFamilies = {"Microsoft YaHei UI", "Microsoft YaHei", "Dialog", Font.SANS_SERIF};
+        String[] fontFamilies = isCjkLocale() ? cjkFontFamilies : latinFontFamilies;
+        Set<String> availableFamilies = new LinkedHashSet<>(java.util.Arrays.asList(
+                GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()
+        ));
+        int fontSize = isCjkLocale() ? Math.max(size, 14) : size;
+        for (String fontFamily : fontFamilies) {
+            Font font = new Font(fontFamily, Font.PLAIN, fontSize);
+            if ((availableFamilies.contains(fontFamily) || Font.SANS_SERIF.equals(fontFamily) || "Dialog".equals(fontFamily))
+                    && canDisplayProtegeUiText(font)) {
+                return new FontUIResource(font);
+            }
+        }
+        return new FontUIResource(new Font("Dialog", Font.PLAIN, fontSize));
+    }
+
+    private static boolean isCjkLocale() {
+        String language = Locale.getDefault().getLanguage();
+        return Locale.CHINESE.getLanguage().equals(language)
+                || Locale.JAPANESE.getLanguage().equals(language)
+                || Locale.KOREAN.getLanguage().equals(language);
+    }
+
+    private static boolean canDisplayProtegeUiText(Font font) {
+        return font.canDisplayUpTo("File Edit View Reasoner 文件名 桌面 文档 打开 取消") == -1;
     }
 
     private void setupExceptionHandler() {

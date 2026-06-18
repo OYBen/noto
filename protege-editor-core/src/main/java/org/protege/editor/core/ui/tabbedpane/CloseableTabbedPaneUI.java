@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.tabbedpane;
 
 import org.protege.editor.core.platform.OSUtils;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -25,11 +26,11 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
 //    public static final int TAB_HEIGHT = 20;
 
-    public static final Color TEXT_COLOR = new Color(50, 50, 50);
+    public static final Color TEXT_COLOR = ModernProtegeTheme.MUTED_TEXT;
 
     public static final Color HIGH_CONTRAST_TEXT_COLOR = new Color(20, 20, 20);
 
-    public static final Color SEL_TEXT_COLOR = new Color(10, 10, 10);
+    public static final Color SEL_TEXT_COLOR = ModernProtegeTheme.TEXT;
 
     public static final String CLOSE_SYMBOL = "\u00D7";
 
@@ -38,9 +39,9 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     public static final int CLOSE_SYMBOL_PADDING = 3;
 
 
-    public static final Color TAB_TOP_COLOR = new Color(210, 210, 210);
+    public static final Color TAB_TOP_COLOR = ModernProtegeTheme.SURFACE_ALT;
 
-    public static final Color TAB_BOTTOM_COLOR = new Color(210, 210, 210);
+    public static final Color TAB_BOTTOM_COLOR = ModernProtegeTheme.SURFACE_ALT;
 
     public static final Color[] tabColorGradient = new Color[]{
             TAB_TOP_COLOR,
@@ -50,17 +51,17 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     public static final float[] tabGradient = new float[]{0.0f, 1.0f};
 
 //    public static final Color SEL_TAB_TOP_COLOR = new Color(220, 220, 220);
-    public static final Color SEL_TAB_TOP_COLOR = Color.WHITE;
+    public static final Color SEL_TAB_TOP_COLOR = ModernProtegeTheme.SURFACE;
 
 //    public static final Color SEL_TAB_BOTTOM_COLOR = new Color(213, 213, 213);
-    public static final Color SEL_TAB_BOTTOM_COLOR = Color.WHITE;
+    public static final Color SEL_TAB_BOTTOM_COLOR = ModernProtegeTheme.SURFACE;
 
     public static final Color[] selTabColorGradient = new Color[]{
             SEL_TAB_TOP_COLOR,
             SEL_TAB_BOTTOM_COLOR
     };
 
-    public static final Color TAB_BORDER_COLOR = new Color(190, 190, 190);
+    public static final Color TAB_BORDER_COLOR = ModernProtegeTheme.BORDER;
 
     public static final Color HIGH_CONTRAST_TAB_BORDER_COLOR = new Color(80, 80, 80);
 
@@ -114,7 +115,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
 
     protected void installDefaults() {
         super.installDefaults();
-        tabAreaInsets = new Insets(10, 20, 30, 40);
+        tabAreaInsets = new Insets(3, 4, 0, 4);
         selectedTabPadInsets = emptyInsets;
         tabInsets = selectedTabPadInsets;
         if (OSUtils.isOSX()) {
@@ -247,7 +248,12 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics, int tabIndex, String title, Rectangle textRect, boolean isSelected) {
         Graphics2D g2 = (Graphics2D) g;
         Object antiAliasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        Object textAntiAliasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+        Object fractionalMetrics = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
         if (isSelected) {
             g.setColor(getSelTextColor());
         }
@@ -256,6 +262,8 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         }
         g.drawString(title, textRect.x, textRect.y + metrics.getAscent());
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textAntiAliasing);
+        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractionalMetrics);
     }
 
     @Override
@@ -331,7 +339,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     private int getTabHeight() {
-        return getFontMetrics().getMaxAscent() + 12;
+        return Math.max(ModernProtegeTheme.TAB_HEIGHT, getFontMetrics().getMaxAscent() + 12);
     }
 
 
@@ -352,27 +360,14 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h,
                                       boolean isSelected) {
         Graphics2D g2 = (Graphics2D) g;
-        Paint paint = g2.getPaint();
-        if(isSelected) {
-            g2.setPaint(new LinearGradientPaint(
-                    x, y, x, y + h,
-                    tabGradient,
-                    selTabColorGradient));
+        Object oldAntialiasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setColor(isSelected ? SEL_TAB_TOP_COLOR : TAB_TOP_COLOR);
+        g2.fillRoundRect(x + 2, y + 2, w - 4, h - 3, 10, 10);
+        if (isSelected) {
+            g2.setColor(ModernProtegeTheme.SELECTION);
+            g2.fillRoundRect(x + 6, y + h - 4, w - 12, 2, 3, 3);
         }
-        else {
-            g2.setPaint(new LinearGradientPaint(x, y, x, y + h,
-                    tabGradient,
-                    tabColorGradient));
-        }
-        g.fillRect(x,  y, w, h);
-        if(!isSelected) {
-//            g2.setPaint(new LinearGradientPaint(
-//                    x, y + h - DROP_SHADOW_HEIGHT, x, y + h,
-//                    dropShadowGradient,
-//                    dropShadowColorGradient));
-//            g2.fillRect(x, y + h - DROP_SHADOW_HEIGHT, w, DROP_SHADOW_HEIGHT);
-        }
-        g2.setPaint(paint);
         if (isSelected) {
             g.setColor(getSelTextColor());
         }
@@ -387,22 +382,7 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
             g.drawString(CLOSE_SYMBOL, x + w - width - TAB_PADDING, y + (h - fm.getHeight()) / 2 + fm.getAscent());
 
         }
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        g.setColor(getTabBorderColor());
-        // TOP
-        g2.drawLine(x, y, x + w - 1, y);
-        if (isFirstTabInRun(tabIndex)) {
-            // LEFT
-            g2.drawLine(x, y, x, y + h);
-        }
-        // RIGHT
-        g2.drawLine(x + w, y, x + w, y + h);
-
-//        if(isSelected && isBottomRun(tabIndex)) {
-//            g.setColor(SEL_TAB_BOTTOM_COLOR);
-//        }
-        // Bottom
-        g2.drawLine(x, y + h, x + w, y + h);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, oldAntialiasing);
     }
 
     private boolean isFirstTabInRun(int tabIndex) {

@@ -9,9 +9,9 @@ import javax.swing.*;
  */
 public abstract class ViewBarIcon implements Icon {
 
-    private static final int WIDTH = 12;
+    private static final int WIDTH = 14;
 
-    private static final int HEIGHT = 12;
+    private static final int HEIGHT = 14;
 
     @Override
     public int getIconWidth() {

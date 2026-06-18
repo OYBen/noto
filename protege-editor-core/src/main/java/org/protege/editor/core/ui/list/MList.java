@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.list;
 
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.util.MousePositionCache;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -21,19 +22,19 @@ import java.util.stream.Stream;
 public class MList extends JList {
 
 
-    private static final Stroke BUTTON_STROKE = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    private static final Stroke BUTTON_STROKE = new BasicStroke(1.8f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-    private static final int BUTTON_DIMENSION = 16;
+    private static final int BUTTON_DIMENSION = ModernProtegeTheme.ICON_SIZE;
 
     private static final int BUTTON_MARGIN = 2;
 
-    private static final Color FRAME_SECTION_HEADER_FOREGROUND = Color.GRAY;
+    private static final Color FRAME_SECTION_HEADER_FOREGROUND = ModernProtegeTheme.MUTED_TEXT;
 
     private static final Color FRAME_SECTION_HEADER_HIGH_CONTRAST_FOREGROUND = new Color(40, 40, 40);
 
     private Font sectionHeaderFont = new Font("Lucida Grande", Font.PLAIN, 10);
     
-    private static final Color itemBackgroundColor = Color.WHITE;
+    private static final Color itemBackgroundColor = ModernProtegeTheme.SURFACE;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -306,6 +307,10 @@ public class MList extends JList {
             if (isSelected) {
                 component.setBackground(list.getSelectionBackground());
             }
+            Dimension preferredSize = component.getPreferredSize();
+            if (preferredSize.height < ModernProtegeTheme.ROW_HEIGHT) {
+                component.setPreferredSize(new Dimension(preferredSize.width, ModernProtegeTheme.ROW_HEIGHT));
+            }
             return component;
         }
 
@@ -322,8 +327,8 @@ public class MList extends JList {
         else {
             FontMetrics fontMetrics = getFontMetrics(font);
             int height = fontMetrics.getMaxAscent() + fontMetrics.getMaxDescent() + fontMetrics.getLeading();
-            if(height < 20) {
-                height = 20;
+            if(height < ModernProtegeTheme.ICON_BUTTON_SIZE) {
+                height = ModernProtegeTheme.ICON_BUTTON_SIZE;
             }
             return height;
         }
@@ -336,7 +341,7 @@ public class MList extends JList {
                 bottomMargin = getRowHeightPadding(index);
             }
         }
-        return BorderFactory.createMatteBorder(0, 0, bottomMargin, 0, Color.WHITE);
+        return BorderFactory.createMatteBorder(0, 0, bottomMargin, 0, ModernProtegeTheme.APP_BACKGROUND);
     }
 
     private int getRowHeightPadding(int index) {
@@ -349,7 +354,7 @@ public class MList extends JList {
 
     protected Border createListItemBorder(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Border internalPadding = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240));
+        Border line = BorderFactory.createMatteBorder(0, 0, 1, 0, ModernProtegeTheme.BORDER);
         Border externalBorder = BorderFactory.createMatteBorder(0, 20, 0, 0, list.getBackground());
         return BorderFactory.createCompoundBorder(
                 externalBorder,
@@ -492,9 +497,9 @@ public class MList extends JList {
     private int paintButton(Graphics2D g2, Rectangle clipBound, int endOfButtonRun, MListButton button) {
         Rectangle buttonBounds = button.getBounds();
         if (buttonBounds != null && buttonBounds.intersects(clipBound)) {
+            g2.setColor(getButtonBackground(button));
+            g2.fillRoundRect(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, 9, 9);
             g2.setColor(this.getButtonColor(button));
-            g2.fillOval(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height);
-            g2.setColor(Color.WHITE);
             Stroke curStroke = g2.getStroke();
             g2.setStroke(BUTTON_STROKE);
             button.paintButtonContent(g2);
@@ -506,6 +511,14 @@ public class MList extends JList {
     }
 
     private Color getButtonColor(MListButton button) {
+        Point pt = getMousePosition();
+        if (pt != null && button.getBounds().contains(pt)) {
+            return Color.WHITE;
+        }
+        return button.getRollOverColor();
+    }
+
+    private Color getButtonBackground(MListButton button) {
         Point pt = getMousePosition();
         if (pt == null) {
             return button.getBackground();

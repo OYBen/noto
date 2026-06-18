@@ -4,6 +4,7 @@ import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.action.ToolBarActionComparator;
 import org.protege.editor.core.ui.action.ToolBarActionPluginJPFImpl;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class MainToolBarBuilder {
 
     public JToolBar getToolBar() {
         JToolBar toolBar = new JToolBar();
+        ModernProtegeTheme.tuneToolbar(toolBar);
         // Add actions to the toolbar
         MainToolBarActionPluginLoader editorKitSpecificLoader = new MainToolBarActionPluginLoader(editorKit);
         List<ToolBarActionPluginJPFImpl> list = new ArrayList<>();
@@ -47,7 +49,8 @@ public class MainToolBarBuilder {
         for (ToolBarActionPluginJPFImpl plugin : list) {
             try {
                 ProtegeAction action = plugin.newInstance();
-                toolBar.add(action);
+                JButton button = toolBar.add(action);
+                ModernProtegeTheme.tuneToolbar(button);
                 action.initialise();
             }
             catch (Exception e) {

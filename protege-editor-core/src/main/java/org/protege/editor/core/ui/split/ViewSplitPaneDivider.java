@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.split;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
@@ -46,10 +48,20 @@ public class ViewSplitPaneDivider extends BasicSplitPaneDivider {
 
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(ModernProtegeTheme.BORDER);
+            int width = getWidth();
+            int height = getHeight();
+            if (height > width) {
+                g2.fillRoundRect(width / 2 - 1, 4, 2, height - 8, 2, 2);
+            }
+            else {
+                g2.fillRoundRect(4, height / 2 - 1, width - 8, 2, 2, 2);
+            }
+            g2.dispose();
             if (DEBUG) {
                 Color oldColor = g.getColor();
-                int width = getWidth();
-                int height = getHeight();
                 g.setColor(Color.MAGENTA);
                 if (height > width) {
                     g.drawLine(width / 2, 2, width / 2, height - 2);

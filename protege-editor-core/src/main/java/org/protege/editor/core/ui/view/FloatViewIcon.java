@@ -16,11 +16,11 @@ public class FloatViewIcon extends ViewIcon {
      * painting, e.g. the foreground or background color.
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor(Color.WHITE);
-        g.fillRect(x, y, getIconWidth(), getIconHeight());
-        g.setColor(c.getBackground());
-        g.fillRect(x + 1, y + 1, getIconWidth() - 2, getIconHeight() - 2);
-        g.setColor(Color.WHITE);
-        g.fillRect(x + 2, y + 2, getIconWidth() - 4, getIconHeight() - 4);
+        Graphics2D g2 = ModernProtegeTheme.iconGraphics(g);
+        g2.translate(x, y);
+        g2.drawRoundRect(3, 4, getIconWidth() - 6, getIconHeight() - 6, 3, 3);
+        g2.drawLine(5, 2, getIconWidth() - 3, 2);
+        g2.drawLine(getIconWidth() - 3, 2, getIconWidth() - 3, getIconHeight() - 5);
+        g2.dispose();
     }
 }

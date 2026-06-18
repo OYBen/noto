@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.list;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -12,7 +14,7 @@ import java.awt.event.ActionListener;
  */
 public class MListDeleteButton extends MListButton {
 
-    public static final Color ROLL_OVER_COLOR = new Color(240, 40, 40);
+    public static final Color ROLL_OVER_COLOR = ModernProtegeTheme.DANGER;
 
 
     public MListDeleteButton(ActionListener actionListener) {
@@ -23,19 +25,16 @@ public class MListDeleteButton extends MListButton {
     public void paintButtonContent(Graphics2D gIn) {
         Graphics2D g = (Graphics2D) gIn.create();
         int size = getBounds().height;
-        int thickness = (Math.round(size / 8.0f) / 2) * 2;
-
         int x = getBounds().x;
         int y = getBounds().y;
 
-        g.rotate(Math.PI / 4, x + size / 2, y + size / 2);
-        
         int insetX = size / 4;
         int insetY = size / 4;
         int insetHeight = size / 2;
         int insetWidth = size / 2;
-        g.fillRect(x + size / 2  - thickness / 2, y + insetY, thickness, insetHeight);
-        g.fillRect(x + insetX, y + size / 2 - thickness / 2, insetWidth, thickness);
+        g.drawLine(x + insetX, y + insetY, x + insetX + insetWidth, y + insetY + insetHeight);
+        g.drawLine(x + insetX, y + insetY + insetHeight, x + insetX + insetWidth, y + insetY);
+        g.dispose();
     }
 
     @Override

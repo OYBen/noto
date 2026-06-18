@@ -135,6 +135,7 @@ public abstract class Workspace extends JComponent implements Disposable {
                 }
             }
         }
+        ModernCommandPalette.install(this, menuBar);
     }
 
     /**
@@ -189,8 +190,36 @@ public abstract class Workspace extends JComponent implements Disposable {
                 menu,
                 lafMenuItemGroup,
                 selectedLookAndFeelClassName,
+                ProtegeProperties.FLAT_LIGHT_LAF_NAME,
+                Optional.of("Flat Light"));
+
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                ProtegeProperties.FLAT_DARK_LAF_NAME,
+                Optional.of("Flat Dark"));
+
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                ProtegeProperties.FLAT_INTELLIJ_LAF_NAME,
+                Optional.of("Flat IntelliJ"));
+
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
+                ProtegeProperties.FLAT_DARCULA_LAF_NAME,
+                Optional.of("Flat Darcula"));
+
+        addLookAndFeelMenuItem(
+                menu,
+                lafMenuItemGroup,
+                selectedLookAndFeelClassName,
                 ProtegeProperties.PLASTIC_LAF_NAME,
-                Optional.of(ProtegeProperties.PROTEGE));
+                Optional.of(ProtegeProperties.PROTEGE + " Classic"));
 
         addLookAndFeelMenuItem(
                 menu,
@@ -215,7 +244,7 @@ public abstract class Workspace extends JComponent implements Disposable {
                 lafShortName = shortName.get();
             }
             else {
-                Class<?> cls = Class.forName(lookAndFeelClassName);
+                Class<?> cls = Class.forName(lookAndFeelClassName, true, getClass().getClassLoader());
                 LookAndFeel laf = (LookAndFeel) cls.newInstance();
                 lafShortName = laf.getName();
             }
@@ -235,7 +264,9 @@ public abstract class Workspace extends JComponent implements Disposable {
 
     private void setLookAndFeel(String clsName, String shortName) {
         try {
-            Class<?> lookAndFeelClass = Class.forName(clsName);
+            ClassLoader classLoader = getClass().getClassLoader();
+            UIManager.put("ClassLoader", classLoader);
+            Class<?> lookAndFeelClass = Class.forName(clsName, true, classLoader);
             LookAndFeel lookAndFeel = (LookAndFeel) lookAndFeelClass.newInstance();
             UIManager.setLookAndFeel(lookAndFeel);
             SwingUtilities.updateComponentTreeUI(Workspace.this);

@@ -58,6 +58,14 @@ public class ProtegeProperties extends Properties {
 	//Default Protege L&F
 	public static final String PLASTIC_LAF_NAME = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
 
+    public static final String FLAT_LIGHT_LAF_NAME = "com.formdev.flatlaf.FlatLightLaf";
+
+    public static final String FLAT_DARK_LAF_NAME = "com.formdev.flatlaf.FlatDarkLaf";
+
+    public static final String FLAT_INTELLIJ_LAF_NAME = "com.formdev.flatlaf.FlatIntelliJLaf";
+
+    public static final String FLAT_DARCULA_LAF_NAME = "com.formdev.flatlaf.FlatDarculaLaf";
+
 
     private ProtegeProperties() {
 

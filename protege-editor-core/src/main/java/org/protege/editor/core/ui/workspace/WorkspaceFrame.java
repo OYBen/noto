@@ -162,7 +162,7 @@ public class WorkspaceFrame extends JFrame {
         setIconImage(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
 
         Optional<JComponent> statusArea = workspace.getStatusArea();
-        statusArea.ifPresent(sa -> contentPane.add(sa, BorderLayout.SOUTH));
+        statusArea.ifPresent(sa -> contentPane.add(ModernStatusBar.wrap(sa), BorderLayout.SOUTH));
         setMinimumSize(new Dimension(MINIMUM_WIDTH, MINIMUM_HEIGHT));
     }
 

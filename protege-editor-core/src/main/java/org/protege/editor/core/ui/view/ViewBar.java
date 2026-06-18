@@ -45,10 +45,7 @@ public class ViewBar extends JPanel {
         toolBar = new JToolBar();
         southPanel.add(toolBar, BorderLayout.WEST);
         add(southPanel, BorderLayout.SOUTH);
-        toolBar.setOpaque(false);
-        toolBar.setFloatable(false);
-        toolBar.setBorderPainted(false);
-        toolBar.setBorder(null);
+        ModernProtegeTheme.tuneToolbar(toolBar);
         viewModeComboBox = new JComboBox<>();
         viewModeComboBox.addActionListener(e -> fireViewModeChanged());
         viewModeComboBox.setVisible(false);
@@ -73,6 +70,7 @@ public class ViewBar extends JPanel {
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.setBackground(null);
         button.setRequestFocusEnabled(false);
+        ModernProtegeTheme.tuneToolbar(button);
         button.setOpaque(true);
         button.addMouseListener(new MouseAdapter() {
             @Override

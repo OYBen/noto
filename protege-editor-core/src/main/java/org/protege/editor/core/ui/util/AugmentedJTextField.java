@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.util;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
@@ -19,9 +21,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class AugmentedJTextField extends JTextField {
 
-    public static final Color DEFAULT_GHOST_TEXT_COLOR = Color.LIGHT_GRAY;
+    public static final Color DEFAULT_GHOST_TEXT_COLOR = ModernProtegeTheme.MUTED_TEXT;
 
-    private static final Color SEARCH_ICON_COLOR = new Color(200, 200, 200);
+    private static final Color SEARCH_ICON_COLOR = ModernProtegeTheme.MUTED_TEXT;
 
     private static final int SEARCH_RECT_WIDTH = 20;
 
@@ -215,7 +217,7 @@ public class AugmentedJTextField extends JTextField {
         Color oldColor = g.getColor();
         try {
             if(errorLocation != -1) {
-                g.setColor(Color.PINK);
+                g.setColor(ModernProtegeTheme.blend(ModernProtegeTheme.DANGER, ModernProtegeTheme.SURFACE, 0.72f));
                 Rectangle rectStart = modelToView(errorLocation);
                 Rectangle rectEnd = modelToView(errorLocation + 1);
                 g.fillRect(rectStart.x, rectStart.y, rectEnd.x - rectStart.x, rectStart.height);
@@ -231,7 +233,7 @@ public class AugmentedJTextField extends JTextField {
             if (!errorMessage.isEmpty()) {
                 int baseLine = getBaseline(getWidth(), getHeight());
                 Rectangle rect = modelToView(getText().length());
-                g.setColor(Color.PINK);
+                g.setColor(ModernProtegeTheme.DANGER);
                 g.drawString(errorMessage, rect.x + SEARCH_RECT_WIDTH, baseLine);
             }
         }

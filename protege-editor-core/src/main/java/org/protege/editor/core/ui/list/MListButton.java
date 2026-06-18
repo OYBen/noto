@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.list;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -93,7 +95,7 @@ public abstract class MListButton {
     }
 
     public Color getBackground() {
-        return Color.LIGHT_GRAY;
+        return ModernProtegeTheme.SURFACE_ALT;
     }
 
     /**

@@ -33,7 +33,7 @@ public class ViewBanner extends JPanel {
 
     private final JToolBar toolBar = new JToolBar();
 
-    private final Color foregroundColor = Color.WHITE;
+    private final Color foregroundColor = ModernProtegeTheme.VIEW_HEADER_FOREGROUND;
 
     private Color backgroundColor;
 
@@ -49,29 +49,37 @@ public class ViewBanner extends JPanel {
     public ViewBanner(@Nonnull String labelText,
                       @Nonnull Color bannerColor) {
         this.labelText = checkNotNull(labelText);
-        this.defaultBackgroundColor = checkNotNull(bannerColor);
-        this.backgroundColor = bannerColor;
+        this.defaultBackgroundColor = ModernProtegeTheme.subtleHeaderColor(checkNotNull(bannerColor));
+        this.backgroundColor = defaultBackgroundColor;
 
         setLayout(new BorderLayout());
-        setOpaque(true);
+        setOpaque(false);
         setBackground(backgroundColor);
         labelPanel = new JPanel(new BorderLayout());
         add(labelPanel, BorderLayout.NORTH);
-        labelPanel.setBackground(null);
-        labelPanel.setOpaque(true);
-        label.setBorder(BorderFactory.createEmptyBorder(0, 3, 1, 3));
+        labelPanel.setPreferredSize(new Dimension(0, ModernProtegeTheme.VIEW_HEADER_HEIGHT));
+        labelPanel.setBackground(backgroundColor);
+        labelPanel.setOpaque(false);
+        label.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         label.setForeground(foregroundColor);
-        label.setFont(label.getFont().deriveFont(14f));
+        label.setFont(label.getFont().deriveFont(Font.PLAIN, 14f));
         setText("");
         toolBar.setBorderPainted(false);
         toolBar.setFloatable(false);
         toolBar.setOpaque(false);
+        ModernProtegeTheme.tuneToolbar(toolBar);
         toolBarPanel = new JPanel(new BorderLayout());
         toolBarPanel.add(toolBar, BorderLayout.EAST);
-        toolBarPanel.setOpaque(true);
+        toolBarPanel.setOpaque(false);
         toolBarPanel.setBackground(backgroundColor);
         labelPanel.add(toolBarPanel, BorderLayout.EAST);
         labelPanel.add(label, BorderLayout.WEST);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        ModernProtegeTheme.paintRoundedHeader(g, this, backgroundColor);
+        super.paintComponent(g);
     }
 
 
@@ -97,9 +105,11 @@ public class ViewBanner extends JPanel {
      * @param color The color to be set.
      */
     public void setBannerColor(Color color) {
-        backgroundColor = color;
+        backgroundColor = ModernProtegeTheme.subtleHeaderColor(color);
+        setBackground(backgroundColor);
         labelPanel.setBackground(backgroundColor);
         toolBarPanel.setBackground(backgroundColor);
+        repaint();
         revalidate();
     }
 
@@ -158,10 +168,11 @@ public class ViewBanner extends JPanel {
         toolBar.add(button);
         Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
         if (icon != null) {
-            button.setPreferredSize(new Dimension(icon.getIconWidth() + 2, icon.getIconHeight()));
+            button.setPreferredSize(ModernProtegeTheme.iconButtonSize());
+            button.setMinimumSize(ModernProtegeTheme.iconButtonSize());
             button.setOpaque(false);
             button.setUI(new ViewButtonUI());
-            button.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 1));
+            ModernProtegeTheme.tuneToolbar(button);
         }
     }
 }

@@ -10,8 +10,6 @@ import java.awt.*;
  */
 public class CloseIcon extends ViewBarIcon {
 
-    private static final BasicStroke STROKE = new BasicStroke(2f);
-
     private static final CloseIcon ICON = new CloseIcon();
 
     private CloseIcon() {
@@ -28,14 +26,13 @@ public class CloseIcon extends ViewBarIcon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(Color.WHITE);
+        Graphics2D g2 = ModernProtegeTheme.iconGraphics(g);
+        g2.translate(x, y);
         int width = getIconWidth();
         int height = getIconHeight();
-        g2.drawRect(1, 1, width - 2, height - 2);
-        g2.setStroke(STROKE);
         g2.drawLine(4, 4, width - 4, height - 4);
         g2.drawLine(4, height - 4, width - 4, 4);
+        g2.dispose();
     }
 
 }
