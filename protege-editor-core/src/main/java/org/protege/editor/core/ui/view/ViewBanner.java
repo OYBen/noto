@@ -19,8 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * matthew.horridge@cs.man.ac.uk<br>
  * www.cs.man.ac.uk/~horridgm<br><br>
 
- * A component that displays a "banner" with
- * white text and a coloured  background.
+ * A compact view header.
  */
 public class ViewBanner extends JPanel {
 
@@ -60,9 +59,9 @@ public class ViewBanner extends JPanel {
         labelPanel.setPreferredSize(new Dimension(0, ModernProtegeTheme.VIEW_HEADER_HEIGHT));
         labelPanel.setBackground(backgroundColor);
         labelPanel.setOpaque(false);
-        label.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        label.setBorder(BorderFactory.createEmptyBorder(4, 16, 4, 8));
         label.setForeground(foregroundColor);
-        label.setFont(label.getFont().deriveFont(Font.PLAIN, 14f));
+        label.setFont(label.getFont().deriveFont(Font.BOLD, 13f));
         setText("");
         toolBar.setBorderPainted(false);
         toolBar.setFloatable(false);

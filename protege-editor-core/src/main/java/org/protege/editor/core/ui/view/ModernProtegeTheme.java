@@ -27,11 +27,11 @@ public final class ModernProtegeTheme {
 
     public static final int CORNER_RADIUS = 12;
 
-    public static final Color VIEW_HEADER_FOREGROUND = new Color(250, 250, 247);
+    public static final Color VIEW_HEADER_FOREGROUND = new Color(29, 36, 46);
 
-    public static final Color VIEW_ICON_COLOR = new Color(252, 252, 249);
+    public static final Color VIEW_ICON_COLOR = new Color(93, 105, 120);
 
-    public static final Color VIEW_ICON_ROLLOVER_BACKGROUND = new Color(255, 255, 255, 42);
+    public static final Color VIEW_ICON_ROLLOVER_BACKGROUND = new Color(238, 244, 255);
 
     public static final Color APP_BACKGROUND = new Color(248, 250, 252);
 
@@ -143,10 +143,14 @@ public final class ModernProtegeTheme {
     public static void paintRoundedHeader(Graphics g, Component component, Color color) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(color);
         int width = component.getWidth();
         int height = component.getHeight();
-        g2.fill(new RoundRectangle2D.Float(0, 0, width, height + 10, 10, 10));
+        g2.setColor(SURFACE);
+        g2.fillRect(0, 0, width, height);
+        g2.setColor(SELECTION);
+        g2.fillRoundRect(8, 7, 3, Math.max(0, height - 14), 3, 3);
+        g2.setColor(BORDER);
+        g2.drawLine(0, height - 1, width, height - 1);
         g2.dispose();
     }
 

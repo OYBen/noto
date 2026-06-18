@@ -119,7 +119,7 @@ public class OWLRendererPreferences {
     }
 
     private static String getDefaultFontName() {
-        return Font.DIALOG;
+        return isCjkLocale() ? "Microsoft YaHei UI" : Font.DIALOG;
     }
 
     private static int getDefaultFontSize() {
@@ -257,11 +257,17 @@ public class OWLRendererPreferences {
         if (fontName == null
                 || "SansSerif".equals(fontName)
                 || Font.SANS_SERIF.equals(fontName)
-                || "Microsoft YaHei UI".equals(fontName)
-                || "Microsoft YaHei".equals(fontName)) {
+                || (isCjkLocale() && Font.DIALOG.equals(fontName))) {
             return DEFAULT_FONT_NAME;
         }
         return fontName;
+    }
+
+    private static boolean isCjkLocale() {
+        String language = Locale.getDefault().getLanguage();
+        return Locale.CHINESE.getLanguage().equals(language)
+                || Locale.JAPANESE.getLanguage().equals(language)
+                || Locale.KOREAN.getLanguage().equals(language);
     }
 
     /*

@@ -559,7 +559,7 @@ public class ProtegeApplication implements BundleActivator {
 
     private static FontUIResource createModernFont(int size) {
         String[] latinFontFamilies = {"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", Font.SANS_SERIF};
-        String[] cjkFontFamilies = {Font.DIALOG, "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", Font.SANS_SERIF};
+        String[] cjkFontFamilies = {"Microsoft YaHei UI", "Microsoft YaHei", Font.DIALOG, "Segoe UI Variable Text", "Segoe UI", Font.SANS_SERIF};
         String[] fontFamilies = isCjkLocale() ? cjkFontFamilies : latinFontFamilies;
         Set<String> availableFamilies = new LinkedHashSet<>(java.util.Arrays.asList(
                 GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()
