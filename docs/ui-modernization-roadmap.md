@@ -11,6 +11,7 @@
 
 1. Todo - Reduce the class hierarchy circular entity marker diameter to one third of the current size.
 2. Todo - Increase the breadcrumb/path font size for hierarchy paths such as KnowledgeNode > VerificationEvent.
+3. Todo - Reduce individual/instance list marker icon diameters, including the blue selection context marker and diamond item icons, to one third of the current size.
 
 ## Framework Direction
 
