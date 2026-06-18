@@ -614,15 +614,17 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
         if (!renderIcon) {
             return null;
         }
+        Icon icon = null;
         if (iconObject != null) {
-            return owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(iconObject);
+            icon = owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(iconObject);
         }
-        if (object instanceof OWLObject) {
-            return owlEditorKit.getWorkspace().getOWLIconProvider().getIcon((OWLObject) object);
+        else if (object instanceof OWLObject) {
+            icon = owlEditorKit.getWorkspace().getOWLIconProvider().getIcon((OWLObject) object);
         }
-        else {
+        if (icon == null) {
             return null;
         }
+        return ScaledIcon.entityMarker(icon);
     }
 
 
@@ -795,15 +797,6 @@ public class OWLCellRenderer implements TableCellRenderer, TreeCellRenderer, Lis
             else {
                 // Not editable - set readonly
                 textPane.setEnabled(false);
-            }
-        }
-        else {
-            // Ontology is null.  If the object is an entity then the font
-            // should be bold if there are statements about it
-            if (value instanceof OWLEntity) {
-                if (activeOntologyContainsAxioms((OWLEntity) value)) {
-                    textPane.setFont(boldFont);
-                }
             }
         }
 

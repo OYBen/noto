@@ -126,12 +126,12 @@ public class BreadcrumbTrailViewImpl extends JPanel implements BreadcrumbTrailVi
 
         @Override
         public Dimension preferredLayoutSize(Container parent) {
-            return new Dimension(1500, 22);
+            return new Dimension(1500, 24);
         }
 
         @Override
         public Dimension minimumLayoutSize(Container parent) {
-            return new Dimension(20, 22);
+            return new Dimension(20, 24);
         }
 
         @Override

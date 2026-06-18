@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.view.individual;
 
 import org.protege.editor.owl.model.selection.OWLSelectionModelListener;
+import org.protege.editor.owl.ui.renderer.ScaledIcon;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.search.EntitySearcher;
@@ -54,7 +55,7 @@ public class OWLMembersListViewComponent extends OWLIndividualListViewComponent 
         OWLClass cls = getOWLWorkspace().getOWLSelectionModel().getLastSelectedClass();
         if (cls != null) {
             typeLabel.setText(getOWLModelManager().getRendering(cls));
-            typeLabel.setIcon(getOWLWorkspace().getOWLIconProvider().getIcon(cls));
+            typeLabel.setIcon(ScaledIcon.entityMarker(getOWLWorkspace().getOWLIconProvider().getIcon(cls)));
             Collection<OWLIndividual> individuals = EntitySearcher.getIndividuals(cls, getOntologies());
             for (OWLIndividual ind : individuals) {
                 if (!ind.isAnonymous()) {

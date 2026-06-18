@@ -497,8 +497,11 @@ public class MList extends JList {
     private int paintButton(Graphics2D g2, Rectangle clipBound, int endOfButtonRun, MListButton button) {
         Rectangle buttonBounds = button.getBounds();
         if (buttonBounds != null && buttonBounds.intersects(clipBound)) {
-            g2.setColor(getButtonBackground(button));
-            g2.fillRoundRect(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, 9, 9);
+            Color buttonBackground = getButtonBackground(button);
+            if (buttonBackground != null) {
+                g2.setColor(buttonBackground);
+                g2.fillRoundRect(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, 9, 9);
+            }
             g2.setColor(this.getButtonColor(button));
             Stroke curStroke = g2.getStroke();
             g2.setStroke(BUTTON_STROKE);
@@ -521,7 +524,7 @@ public class MList extends JList {
     private Color getButtonBackground(MListButton button) {
         Point pt = getMousePosition();
         if (pt == null) {
-            return button.getBackground();
+            return null;
         }
         if (button.getBounds().contains(pt)) {
             if (this.mouseDown) {
@@ -531,7 +534,7 @@ public class MList extends JList {
                 return button.getRollOverColor();
             }
         }
-        return button.getBackground();
+        return null;
     }
 
     @Override

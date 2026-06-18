@@ -1,6 +1,5 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
-import org.protege.editor.core.Fonts;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -43,7 +42,7 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
                               @Nonnull String rendering) {
         this.object = object;
         this.rendering = rendering;
-        setFont(Fonts.getMediumDialogFont());
+        setFont(createBreadcrumbFont());
         setupTooltip(object, rendering);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addMouseListener(new MouseAdapter() {
@@ -52,6 +51,13 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
                 clickHandler.accept(object);
             }
         });
+    }
+
+    @Nonnull
+    private static Font createBreadcrumbFont() {
+        Font labelFont = UIManager.getFont("Label.font");
+        Font baseFont = labelFont != null ? labelFont : new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+        return baseFont.deriveFont(Font.PLAIN, Math.max(14.0f, baseFont.getSize2D()));
     }
 
     @Override

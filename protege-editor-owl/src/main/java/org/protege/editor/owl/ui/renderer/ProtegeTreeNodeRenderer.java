@@ -1,13 +1,10 @@
 package org.protege.editor.owl.ui.renderer;
 
 import org.protege.editor.owl.OWLEditorKit;
-import org.protege.editor.owl.model.OWLModelManager;
 import org.protege.editor.owl.model.prefix.PrefixedNameRenderer;
 import org.protege.editor.owl.ui.tree.OWLModelManagerTree;
 import org.protege.editor.owl.ui.tree.OWLObjectTreeNode;
 import org.semanticweb.owlapi.model.*;
-import org.semanticweb.owlapi.model.parameters.Imports;
-import org.semanticweb.owlapi.util.OWLObjectVisitorExAdapter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,16 +37,11 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
     @Nonnull
     private final OWLEditorKit editorKit;
 
-    @Nonnull
-    private final ActiveOntologyVisitor activeOntologyVisitor;
-
     private final DefaultTreeCellRendererEx delegateTreeCellRenderer = new DefaultTreeCellRendererEx();
 
     private final IconDecorator icon = new IconDecorator();
 
     private Font plainFont = new Font("sans-serif", Font.PLAIN, 12);
-
-    private Font boldFont = plainFont.deriveFont(Font.BOLD);
 
     private final PrefixedNameRenderer prefixedNameRenderer = PrefixedNameRenderer.builder()
             .withOwlPrefixes()
@@ -59,14 +51,12 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
 
     public ProtegeTreeNodeRenderer(@Nonnull OWLEditorKit editorKit) {
         this.editorKit = checkNotNull(editorKit);
-        this.activeOntologyVisitor = new ActiveOntologyVisitor(editorKit.getOWLModelManager());
     }
 
     private void setupFonts() {
         Font sysFont = OWLRendererPreferences.getInstance().getFont();
         if(!plainFont.equals(sysFont)) {
             plainFont = sysFont;
-            boldFont = plainFont.deriveFont(Font.BOLD);
         }
     }
 
@@ -83,7 +73,6 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
         boolean consistent = true;
         boolean deprecated = false;
         boolean satisfiable = true;
-        boolean active = false;
         String rendering = "";
         icon.clearIcon();
         icon.clearRelationship();
@@ -103,9 +92,8 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                         .collect(joining());
                 rendering += equivsRendering;
                 deprecated = isDeprecated(object);
-                active = isActive(object);
                 Icon entityIcon = editorKit.getOWLWorkspace().getOWLIconProvider().getIcon(object);
-                icon.setIcon(entityIcon);
+                icon.setIcon(ScaledIcon.entityMarker(entityIcon));
                 node.getRelationship().ifPresent(icon::setRelationship);
                 boolean displayRelationships = shouldDisplayRelationships(tree);
                 icon.setRelationshipsDisplayed(displayRelationships && !object.isTopEntity());
@@ -130,12 +118,7 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                                                                                                    leaf,
                                                                                                    row,
                                                                                                    hasFocus);
-        if(active) {
-            renderingComponent.setFont(boldFont);
-        }
-        else {
-            renderingComponent.setFont(plainFont);
-        }
+        renderingComponent.setFont(plainFont);
         icon.setDeprecated(deprecated);
         icon.rebuild();
         renderingComponent.setIcon(icon);
@@ -181,62 +164,6 @@ public class ProtegeTreeNodeRenderer implements TreeCellRenderer {
                                                             .getCurrentReasoner()
                                                             .isSatisfiable((OWLClass) owlObject);
     }
-
-    /**
-     * Determines if the specified object is "active", meaning that it is defined in the active ontology.
-     * @return true if the specified object is active otherwise false.  A value of true will only ever
-     * be returned for OWLEntity object.s
-     */
-    private boolean isActive(@Nonnull OWLObject owlObject) {
-        return owlObject.accept(activeOntologyVisitor);
-    }
-
-
-    /**
-     * An implementation of a visitor that can be used to determine if an object should be highlighted as being
-     * in the active ontology.
-     */
-    private static final class ActiveOntologyVisitor extends OWLObjectVisitorExAdapter<Boolean> {
-
-        @Nonnull
-        private final OWLModelManager modelManager;
-
-        public ActiveOntologyVisitor(@Nonnull OWLModelManager modelManager) {
-            super(false);
-            this.modelManager = modelManager;
-        }
-
-        @Override
-        public Boolean visit(OWLClass ce) {
-            return !modelManager.getActiveOntology().getAxioms(ce, Imports.EXCLUDED).isEmpty()
-                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(ce.getIRI()).isEmpty();
-        }
-
-        @Override
-        public Boolean visit(OWLDataProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
-                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
-        }
-
-        @Override
-        public Boolean visit(OWLObjectProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
-                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
-        }
-
-        @Override
-        public Boolean visit(OWLNamedIndividual individual) {
-            return !modelManager.getActiveOntology().getAxioms(individual, Imports.EXCLUDED).isEmpty()
-                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(individual.getIRI()).isEmpty();
-        }
-
-        @Override
-        public Boolean visit(OWLAnnotationProperty property) {
-            return !modelManager.getActiveOntology().getAxioms(property, Imports.EXCLUDED).isEmpty()
-                    || !modelManager.getActiveOntology().getAnnotationAssertionAxioms(property.getIRI()).isEmpty();
-        }
-    }
-
 
     /**
      * Extends the {@link DefaultTreeCellRenderer} so that a strikeout line is painted through it

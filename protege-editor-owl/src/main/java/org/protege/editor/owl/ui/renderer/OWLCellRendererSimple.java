@@ -68,7 +68,6 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         label.setFont(font);
         setText(value, label);
         setIcon(value, label);
-        boldIfNecessary(value, label);
         if (value == null){
             // so that null does not render with no height
             label.setPreferredSize(new Dimension(label.getPreferredSize().width, label.getFontMetrics(font).getHeight()));
@@ -94,43 +93,7 @@ public class OWLCellRendererSimple implements TreeCellRenderer, ListCellRenderer
         if(value instanceof OWLObject) {
             OWLObject obj = (OWLObject) value;
             Icon icon = owlEditorKit.getWorkspace().getOWLIconProvider().getIcon(obj);
-            renderer.setIcon(icon);
+            renderer.setIcon(ScaledIcon.entityMarker(icon));
         }
-    }
-
-
-    private void boldIfNecessary(Object value, JLabel renderer) {
-        if(value instanceof OWLEntity) {
-            OWLEntity ent = (OWLEntity) value;
-            if(ent instanceof OWLClass) {
-                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLClass) ent).isEmpty()) {
-                    makeBold(renderer);
-                }
-            }
-            else if(ent instanceof OWLObjectProperty) {
-                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLObjectProperty) ent).isEmpty()) {
-                    makeBold(renderer);
-                }
-            }
-            else if(ent instanceof OWLDataProperty) {
-                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLDataProperty) ent).isEmpty()) {
-                    makeBold(renderer);
-                }
-            }
-            else if(ent instanceof OWLIndividual) {
-                if(!owlEditorKit.getModelManager().getActiveOntology().getAxioms((OWLIndividual) ent).isEmpty()) {
-                    makeBold(renderer);
-                }
-            }
-        }
-    }
-
-
-    private static void makeBold(JLabel label) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<html><body><b>");
-        sb.append(label.getText());
-        sb.append("</b></body></html>");
-        label.setText(sb.toString());
     }
 }
