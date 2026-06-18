@@ -33,27 +33,35 @@ public final class ModernProtegeTheme {
 
     public static final Color VIEW_ICON_ROLLOVER_BACKGROUND = new Color(255, 255, 255, 42);
 
-    public static final Color APP_BACKGROUND = new Color(246, 247, 247);
+    public static final Color APP_BACKGROUND = new Color(243, 245, 246);
 
-    public static final Color SURFACE = new Color(252, 252, 250);
+    public static final Color SURFACE = new Color(255, 255, 253);
 
-    public static final Color SURFACE_ALT = new Color(241, 243, 243);
+    public static final Color SURFACE_ALT = new Color(235, 239, 240);
 
-    public static final Color BORDER = new Color(214, 218, 218);
+    public static final Color BORDER = new Color(184, 194, 198);
 
-    public static final Color TEXT = new Color(24, 28, 29);
+    public static final Color TEXT = new Color(14, 18, 20);
 
-    public static final Color MUTED_TEXT = new Color(72, 82, 85);
+    public static final Color MUTED_TEXT = new Color(47, 58, 62);
 
-    public static final Color SELECTION = new Color(94, 123, 139);
+    public static final Color SELECTION = new Color(36, 99, 169);
 
-    public static final Color SELECTION_SOFT = new Color(222, 231, 234);
+    public static final Color SELECTION_SOFT = new Color(214, 229, 247);
 
-    public static final Color CONTROL_HOVER = new Color(232, 236, 236);
+    public static final Color CONTROL_HOVER = new Color(222, 229, 232);
 
-    public static final Color STATUS_BACKGROUND = new Color(238, 241, 241);
+    public static final Color MENU_BAR_BACKGROUND = new Color(43, 45, 48);
 
-    public static final Color STATUS_BORDER = new Color(203, 209, 209);
+    public static final Color MENU_BAR_FOREGROUND = new Color(238, 240, 242);
+
+    public static final Color MENU_BAR_SELECTION = new Color(58, 62, 66);
+
+    public static final Color MENU_POPUP_BACKGROUND = new Color(250, 251, 251);
+
+    public static final Color STATUS_BACKGROUND = new Color(232, 237, 239);
+
+    public static final Color STATUS_BORDER = new Color(170, 182, 187);
 
     public static final Color STATUS_CHIP_BACKGROUND = new Color(248, 249, 248);
 
@@ -63,19 +71,19 @@ public final class ModernProtegeTheme {
 
     public static final Color INFO = new Color(103, 126, 151);
 
-    private static final Color MORANDI_STONE = new Color(123, 133, 135);
+    private static final Color MORANDI_STONE = new Color(93, 107, 112);
 
-    private static final Color MORANDI_MAUVE = new Color(137, 116, 132);
+    private static final Color MORANDI_MAUVE = new Color(125, 82, 117);
 
-    private static final Color MORANDI_OLIVE = new Color(145, 139, 104);
+    private static final Color MORANDI_OLIVE = new Color(124, 114, 57);
 
-    private static final Color MORANDI_SAGE = new Color(122, 139, 123);
+    private static final Color MORANDI_SAGE = new Color(84, 125, 91);
 
-    private static final Color MORANDI_BLUE = new Color(111, 130, 148);
+    private static final Color MORANDI_BLUE = new Color(72, 103, 137);
 
-    private static final Color MORANDI_TEAL = new Color(103, 135, 137);
+    private static final Color MORANDI_TEAL = new Color(62, 124, 130);
 
-    private static final Color MORANDI_CLAY = new Color(145, 112, 103);
+    private static final Color MORANDI_CLAY = new Color(138, 82, 68);
 
     private ModernProtegeTheme() {
     }

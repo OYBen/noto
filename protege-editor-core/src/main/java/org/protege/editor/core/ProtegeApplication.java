@@ -468,6 +468,20 @@ public class ProtegeApplication implements BundleActivator {
             defaults.put("Menu.selectionForeground", ModernProtegeTheme.TEXT);
             defaults.put("MenuItem.selectionBackground", ModernProtegeTheme.SELECTION_SOFT);
             defaults.put("MenuItem.selectionForeground", ModernProtegeTheme.TEXT);
+            defaults.put("MenuBar.background", ModernProtegeTheme.MENU_BAR_BACKGROUND);
+            defaults.put("MenuBar.foreground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("MenuBar.borderColor", ModernProtegeTheme.MENU_BAR_BACKGROUND);
+            defaults.put("MenuBar.hoverBackground", ModernProtegeTheme.MENU_BAR_SELECTION);
+            defaults.put("MenuBar.selectionBackground", ModernProtegeTheme.MENU_BAR_SELECTION);
+            defaults.put("MenuBar.selectionForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("Menu.background", ModernProtegeTheme.MENU_BAR_BACKGROUND);
+            defaults.put("Menu.foreground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("Menu.hoverBackground", ModernProtegeTheme.MENU_BAR_SELECTION);
+            defaults.put("Menu.hoverForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("Menu.selectionBackground", ModernProtegeTheme.MENU_BAR_SELECTION);
+            defaults.put("Menu.selectionForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("PopupMenu.background", ModernProtegeTheme.MENU_POPUP_BACKGROUND);
+            defaults.put("PopupMenu.borderColor", ModernProtegeTheme.BORDER);
             applySharpTextRenderingDefaults(defaults);
         }
 

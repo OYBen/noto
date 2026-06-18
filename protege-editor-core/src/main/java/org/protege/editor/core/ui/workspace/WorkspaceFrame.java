@@ -8,6 +8,7 @@ import org.protege.editor.core.ui.action.ProtegeAction;
 import org.protege.editor.core.ui.menu.MenuBuilder;
 import org.protege.editor.core.ui.util.Icons;
 import org.protege.editor.core.ui.util.UIUtil;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -179,8 +180,32 @@ public class WorkspaceFrame extends JFrame {
         // Delegate to the menu builder, which will create the
         // menus based on installed plugins.
         MenuBuilder menuBuilder = new MenuBuilder(workspace.getEditorKit());
-        setJMenuBar(menuBuilder.buildMenu());
+        JMenuBar menuBar = menuBuilder.buildMenu();
+        installDarkMenuBar(menuBar);
+        setJMenuBar(menuBar);
         menuActions.addAll(menuBuilder.getActions());
+    }
+
+    private void installDarkMenuBar(JMenuBar menuBar) {
+        menuBar.setOpaque(true);
+        menuBar.setBackground(ModernProtegeTheme.MENU_BAR_BACKGROUND);
+        menuBar.setForeground(ModernProtegeTheme.MENU_BAR_FOREGROUND);
+        menuBar.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, ModernProtegeTheme.MENU_BAR_BACKGROUND));
+        for (int i = 0; i < menuBar.getMenuCount(); i++) {
+            JMenu menu = menuBar.getMenu(i);
+            if (menu != null) {
+                styleTopLevelMenu(menu);
+            }
+        }
+    }
+
+    private void styleTopLevelMenu(JMenu menu) {
+        menu.setOpaque(true);
+        menu.setBackground(ModernProtegeTheme.MENU_BAR_BACKGROUND);
+        menu.setForeground(ModernProtegeTheme.MENU_BAR_FOREGROUND);
+        menu.setBorder(BorderFactory.createEmptyBorder(4, 7, 4, 7));
+        menu.getPopupMenu().setBackground(ModernProtegeTheme.MENU_POPUP_BACKGROUND);
+        menu.getPopupMenu().setBorder(BorderFactory.createLineBorder(ModernProtegeTheme.BORDER));
     }
     
 
