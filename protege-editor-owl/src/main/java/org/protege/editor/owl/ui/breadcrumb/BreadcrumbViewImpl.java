@@ -1,5 +1,6 @@
 package org.protege.editor.owl.ui.breadcrumb;
 
+import org.protege.editor.core.ui.util.SharpTextRendering;
 import org.protege.editor.owl.model.util.OboUtilities;
 import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObject;
@@ -113,6 +114,7 @@ public class BreadcrumbViewImpl extends JPanel implements BreadcrumbView {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        SharpTextRendering.apply(g2);
         int x = 0;
         if(parentArrowVisible) {
             g2.setColor(ARROW_COLOR);

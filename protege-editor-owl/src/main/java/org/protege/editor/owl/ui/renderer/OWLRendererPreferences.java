@@ -119,11 +119,11 @@ public class OWLRendererPreferences {
     }
 
     private static String getDefaultFontName() {
-        return "SansSerif";
+        return Font.DIALOG;
     }
 
     private static int getDefaultFontSize() {
-        return 12;
+        return 14;
     }
     @Deprecated
     public void setFontName(String fontName) {
@@ -241,14 +241,27 @@ public class OWLRendererPreferences {
         allowProtegeToOverrideRenderer = p.getBoolean(ALLOW_PROTEGE_TO_OVERRIDE_RENDERER, true);
         setRendererPlugin(p.getString(RENDERER_CLASS, DEFAULT_RENDERER_CLASS_NAME));
         renderDomainAxiomsAsGCIs = false; p.putBoolean(RENDER_DOMAIN_AXIOMS_AS_GCIS, false);
-        fontSize = p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE);
-        fontName = p.getString(FONT_NAME, DEFAULT_FONT_NAME);
+        fontSize = Math.max(DEFAULT_FONT_SIZE, p.getInt(FONT_SIZE, DEFAULT_FONT_SIZE));
+        fontName = getModernFontName(p.getString(FONT_NAME, DEFAULT_FONT_NAME));
+        p.putInt(FONT_SIZE, fontSize);
+        p.putString(FONT_NAME, fontName);
         displayAnnotationAnnotationsInline = p.getBoolean(DISPLAY_ANNOTATION_ANNOTATIONS_INLINE, true);
         displayLiteralDatatypesInline = p.getBoolean(DISPLAY_LITERAL_DATATYPES_INLINE, true);
         displayThumbnailsInline = p.getBoolean(DISPLAY_THUMBNAILS_INLINE, true);
         useOnlineLinkExtractors = p.getBoolean(USE_ONLINE_LINK_EXTRACTORS, true);
         loadAnnotations();
         resetFont();
+    }
+
+    private static String getModernFontName(String fontName) {
+        if (fontName == null
+                || "SansSerif".equals(fontName)
+                || Font.SANS_SERIF.equals(fontName)
+                || "Microsoft YaHei UI".equals(fontName)
+                || "Microsoft YaHei".equals(fontName)) {
+            return DEFAULT_FONT_NAME;
+        }
+        return fontName;
     }
 
     /*

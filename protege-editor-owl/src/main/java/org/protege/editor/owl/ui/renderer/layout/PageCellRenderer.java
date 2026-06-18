@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
 import org.protege.editor.core.ui.list.RendererWithInsets;
+import org.protege.editor.core.ui.util.SharpTextRendering;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -94,7 +95,7 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
             int width = getMaxAvailablePageWidth(list, value, index, isSelected, cellHasFocus);
             page.setWidth(width);
             if (list.getGraphics() != null) {
-                page.layout(graphics.getFontRenderContext());
+                page.layout(SharpTextRendering.fontRenderContext());
             }
         }
         else {
@@ -102,7 +103,7 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
             if(page.getWidth() != width) {
                 page.setWidth(width);
                 page.invalidateLayout();
-                page.layout(graphics.getFontRenderContext());
+                page.layout(SharpTextRendering.fontRenderContext());
             }
         }
         setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
@@ -178,7 +179,7 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
         getMaxAvailablePageWidth(page, table, value, isSelected, hasFocus, row, column);
         Graphics2D graphics = (Graphics2D) table.getGraphics();
         if (table.getGraphics() != null) {
-            page.layout(graphics.getFontRenderContext());
+            page.layout(SharpTextRendering.fontRenderContext());
         }
         setPreferredSize(page.getSize());
         return this;
@@ -228,6 +229,7 @@ public abstract class PageCellRenderer extends JPanel implements ListCellRendere
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        SharpTextRendering.apply(g2);
         page.setLocation(getInsets().left, getInsets().top);
         Point mousePos = component.getMousePosition();
         if(mousePos != null) {

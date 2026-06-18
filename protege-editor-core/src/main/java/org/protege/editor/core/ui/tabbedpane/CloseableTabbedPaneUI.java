@@ -1,6 +1,7 @@
 package org.protege.editor.core.ui.tabbedpane;
 
 import org.protege.editor.core.platform.OSUtils;
+import org.protege.editor.core.ui.util.SharpTextRendering;
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
@@ -250,10 +251,10 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         Object antiAliasing = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
         Object textAntiAliasing = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
         Object fractionalMetrics = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
+        Object lcdContrast = g2.getRenderingHint(RenderingHints.KEY_TEXT_LCD_CONTRAST);
+        Object rendering = g2.getRenderingHint(RenderingHints.KEY_RENDERING);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
-        g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+        SharpTextRendering.apply(g2);
         if (isSelected) {
             g.setColor(getSelTextColor());
         }
@@ -264,6 +265,8 @@ public class CloseableTabbedPaneUI extends BasicTabbedPaneUI {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textAntiAliasing);
         g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractionalMetrics);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_LCD_CONTRAST, lcdContrast);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, rendering);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.protege.editor.core.ui.list;
 
 import org.protege.editor.core.ui.util.UIUtil;
 import org.protege.editor.core.ui.util.MousePositionCache;
+import org.protege.editor.core.ui.util.SharpTextRendering;
 import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
@@ -470,6 +471,7 @@ public class MList extends JList {
         int baseLine = rowBounds.y + (getButtonDimension() + BUTTON_MARGIN - g2.getFontMetrics().getHeight()) / 2 + g2.getFontMetrics().getAscent();
         Font oldFont = g2.getFont();
         g2.setFont(getSectionHeaderFont());
+        SharpTextRendering.apply(g2);
         g2.drawString(header.getName(), 5, baseLine);
         g2.setFont(oldFont);
     }

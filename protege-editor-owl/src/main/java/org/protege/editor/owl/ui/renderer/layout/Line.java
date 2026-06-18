@@ -1,5 +1,7 @@
 package org.protege.editor.owl.ui.renderer.layout;
 
+import org.protege.editor.core.ui.util.SharpTextRendering;
+
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextAttribute;
@@ -45,7 +47,7 @@ public class Line extends PageObject {
     }
 
     public void layout(FontRenderContext fontRenderContext) {
-        this.textLayout = new TextLayout(attributedString.getIterator(), fontRenderContext);
+        this.textLayout = new TextLayout(attributedString.getIterator(), SharpTextRendering.fontRenderContext());
         int textHeight = (int) (textLayout.getAscent() + textLayout.getDescent() + textLayout.getLeading());
         int totalHeight = textHeight + getInsetsTop() + getInsetsBottom();
         setHeight(totalHeight);
@@ -54,6 +56,7 @@ public class Line extends PageObject {
     public void paintContent(Graphics2D g2) {
         float v = getBaseline();
         AttributedString toRender = attributedString;
+        SharpTextRendering.apply(g2);
 //        LinkSpan activeLinkSpan = getPage().getActiveLinkSpan();
 //        if (activeLinkSpan != null) {
 //            for(LinkBox link : linkMap.keySet()) {

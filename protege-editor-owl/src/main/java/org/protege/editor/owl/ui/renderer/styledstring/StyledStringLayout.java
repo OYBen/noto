@@ -1,6 +1,7 @@
 package org.protege.editor.owl.ui.renderer.styledstring;
 
 import com.google.common.collect.ImmutableList;
+import org.protege.editor.core.ui.util.SharpTextRendering;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -63,6 +64,7 @@ public class StyledStringLayout {
     }
 
     public void draw(Graphics2D g2, float x, float y) {
+        SharpTextRendering.apply(g2);
         float yOffset = y;
         float leading = 0;
         float ascent = 0;

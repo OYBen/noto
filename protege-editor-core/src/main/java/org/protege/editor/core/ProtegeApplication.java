@@ -21,6 +21,7 @@ import org.protege.editor.core.ui.progress.BackgroundTaskManager;
 import org.protege.editor.core.ui.tabbedpane.CloseableTabbedPaneUI;
 import org.protege.editor.core.ui.util.ErrorMessage;
 import org.protege.editor.core.ui.util.ProtegePlasticTheme;
+import org.protege.editor.core.ui.util.SharpTextRendering;
 import org.protege.editor.core.ui.view.ModernProtegeTheme;
 import org.protege.editor.core.ui.workspace.Workspace;
 import org.protege.editor.core.update.PluginManager;
@@ -534,20 +535,14 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     private static void applySharpTextRenderingDefaults(UIDefaults defaults) {
-        Map<RenderingHints.Key, Object> desktopHints = new HashMap<>();
-        desktopHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        desktopHints.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
-        desktopHints.put(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
-        desktopHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        defaults.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        defaults.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
-        defaults.put(RenderingHints.KEY_TEXT_LCD_CONTRAST, 220);
+        Map<RenderingHints.Key, Object> desktopHints = SharpTextRendering.desktopHints();
+        desktopHints.forEach(defaults::put);
         defaults.put("awt.font.desktophints", desktopHints);
     }
 
     private static FontUIResource createModernFont(int size) {
         String[] latinFontFamilies = {"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", Font.SANS_SERIF};
-        String[] cjkFontFamilies = {"Microsoft YaHei UI", "Microsoft YaHei", "Dialog", Font.SANS_SERIF};
+        String[] cjkFontFamilies = {Font.DIALOG, "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", Font.SANS_SERIF};
         String[] fontFamilies = isCjkLocale() ? cjkFontFamilies : latinFontFamilies;
         Set<String> availableFamilies = new LinkedHashSet<>(java.util.Arrays.asList(
                 GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()
@@ -555,12 +550,12 @@ public class ProtegeApplication implements BundleActivator {
         int fontSize = isCjkLocale() ? Math.max(size, 14) : size;
         for (String fontFamily : fontFamilies) {
             Font font = new Font(fontFamily, Font.PLAIN, fontSize);
-            if ((availableFamilies.contains(fontFamily) || Font.SANS_SERIF.equals(fontFamily) || "Dialog".equals(fontFamily))
+            if ((availableFamilies.contains(fontFamily) || Font.SANS_SERIF.equals(fontFamily) || Font.DIALOG.equals(fontFamily))
                     && canDisplayProtegeUiText(font)) {
                 return new FontUIResource(font);
             }
         }
-        return new FontUIResource(new Font("Dialog", Font.PLAIN, fontSize));
+        return new FontUIResource(new Font(Font.DIALOG, Font.PLAIN, fontSize));
     }
 
     private static boolean isCjkLocale() {
@@ -571,7 +566,8 @@ public class ProtegeApplication implements BundleActivator {
     }
 
     private static boolean canDisplayProtegeUiText(Font font) {
-        return font.canDisplayUpTo("File Edit View Reasoner 文件名 桌面 文档 打开 取消") == -1;
+        String sample = isCjkLocale() ? "File Edit View Reasoner 文件名 桌面 文档 打开 取消" : "File Edit View Reasoner";
+        return font.canDisplayUpTo(sample) == -1;
     }
 
     private void setupExceptionHandler() {
