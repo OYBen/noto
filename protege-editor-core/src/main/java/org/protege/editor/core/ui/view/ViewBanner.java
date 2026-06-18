@@ -34,6 +34,8 @@ public class ViewBanner extends JPanel {
 
     private final Color foregroundColor = ModernProtegeTheme.VIEW_HEADER_FOREGROUND;
 
+    private Color accentColor;
+
     private Color backgroundColor;
 
     private String labelText;
@@ -48,7 +50,8 @@ public class ViewBanner extends JPanel {
     public ViewBanner(@Nonnull String labelText,
                       @Nonnull Color bannerColor) {
         this.labelText = checkNotNull(labelText);
-        this.defaultBackgroundColor = ModernProtegeTheme.subtleHeaderColor(checkNotNull(bannerColor));
+        this.accentColor = ModernProtegeTheme.viewHeaderColor(checkNotNull(bannerColor));
+        this.defaultBackgroundColor = ModernProtegeTheme.viewHeaderBackground(accentColor);
         this.backgroundColor = defaultBackgroundColor;
 
         setLayout(new BorderLayout());
@@ -59,8 +62,10 @@ public class ViewBanner extends JPanel {
         labelPanel.setPreferredSize(new Dimension(0, ModernProtegeTheme.VIEW_HEADER_HEIGHT));
         labelPanel.setBackground(backgroundColor);
         labelPanel.setOpaque(false);
-        label.setBorder(BorderFactory.createEmptyBorder(4, 16, 4, 8));
+        label.setBorder(BorderFactory.createEmptyBorder(4, 18, 4, 8));
         label.setForeground(foregroundColor);
+        label.setIcon(new HeaderColorIcon());
+        label.setIconTextGap(7);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 13f));
         setText("");
         toolBar.setBorderPainted(false);
@@ -77,7 +82,7 @@ public class ViewBanner extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        ModernProtegeTheme.paintRoundedHeader(g, this, backgroundColor);
+        ModernProtegeTheme.paintRoundedHeader(g, this, accentColor, backgroundColor);
         super.paintComponent(g);
     }
 
@@ -104,10 +109,12 @@ public class ViewBanner extends JPanel {
      * @param color The color to be set.
      */
     public void setBannerColor(Color color) {
-        backgroundColor = ModernProtegeTheme.subtleHeaderColor(color);
+        accentColor = ModernProtegeTheme.viewHeaderColor(color);
+        backgroundColor = ModernProtegeTheme.viewHeaderBackground(accentColor);
         setBackground(backgroundColor);
         labelPanel.setBackground(backgroundColor);
         toolBarPanel.setBackground(backgroundColor);
+        label.repaint();
         repaint();
         revalidate();
     }
@@ -172,6 +179,28 @@ public class ViewBanner extends JPanel {
             button.setOpaque(false);
             button.setUI(new ViewButtonUI());
             ModernProtegeTheme.tuneToolbar(button);
+        }
+    }
+
+    private class HeaderColorIcon implements Icon {
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(accentColor);
+            g2.fillOval(x, y + 4, 8, 8);
+            g2.dispose();
+        }
+
+        @Override
+        public int getIconWidth() {
+            return 8;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 16;
         }
     }
 }

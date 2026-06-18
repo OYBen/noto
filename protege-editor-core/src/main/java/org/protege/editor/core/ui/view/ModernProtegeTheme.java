@@ -118,7 +118,11 @@ public final class ModernProtegeTheme {
 
     public static Color subtleHeaderColor(Color source) {
         Color color = viewHeaderColor(source);
-        return blend(color, SELECTION, 0.12f);
+        return viewHeaderBackground(color);
+    }
+
+    public static Color viewHeaderBackground(Color color) {
+        return blend(color, SURFACE, 0.88f);
     }
 
     public static Color blend(Color a, Color b, float bWeight) {
@@ -140,16 +144,16 @@ public final class ModernProtegeTheme {
         return g2;
     }
 
-    public static void paintRoundedHeader(Graphics g, Component component, Color color) {
+    public static void paintRoundedHeader(Graphics g, Component component, Color accentColor, Color backgroundColor) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         int width = component.getWidth();
         int height = component.getHeight();
-        g2.setColor(SURFACE);
+        g2.setColor(backgroundColor);
         g2.fillRect(0, 0, width, height);
-        g2.setColor(SELECTION);
-        g2.fillRoundRect(8, 7, 3, Math.max(0, height - 14), 3, 3);
-        g2.setColor(BORDER);
+        g2.setColor(accentColor);
+        g2.fillRoundRect(8, 6, 4, Math.max(0, height - 12), 4, 4);
+        g2.setColor(blend(accentColor, BORDER, 0.74f));
         g2.drawLine(0, height - 1, width, height - 1);
         g2.dispose();
     }
