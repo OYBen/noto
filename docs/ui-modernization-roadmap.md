@@ -7,6 +7,10 @@
 3. Done - Redesign the status bar: preserve existing Git/reasoner/inference/log status while placing it in a modern compact bar.
 4. Done - Add a command palette prototype: Ctrl+Shift+P searches and runs commands from the current menu bar.
 
+## Visual Polish Backlog
+
+1. Todo - Reduce the class hierarchy circular entity marker diameter to one third of the current size.
+
 ## Framework Direction
 
 Prefer incremental modernization on Swing plus FlatLaf before considering a full UI framework rewrite.
