@@ -274,14 +274,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private static void loadDefaults() {
-        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "4F7F70");
-        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "5A8A7B");
-        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "5A8A7B");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "6E957F");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "63887D");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "5D746D");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "788A67");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "8D9D78");
+        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "3F6EA5");
+        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "547AA8");
+        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "547AA8");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "5C879E");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "6F647A");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "59636E");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "7E745B");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "82706A");
 
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
