@@ -89,6 +89,7 @@ public class WorkspaceFrame extends JFrame {
         rootPane.putClientProperty("JRootPane.titleBarForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
         rootPane.putClientProperty("JRootPane.titleBarInactiveBackground", ModernProtegeTheme.TITLE_BAR_BACKGROUND);
         rootPane.putClientProperty("JRootPane.titleBarInactiveForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+        rootPane.putClientProperty("JRootPane.titleBarShowIcon", false);
     }
 
 
@@ -176,7 +177,7 @@ public class WorkspaceFrame extends JFrame {
         if (title != null) {
             setTitle(title);
         }
-        setIconImages(createFrameIcons());
+        setIconImages(createTaskbarIcons());
 
         Optional<JComponent> statusArea = workspace.getStatusArea();
         statusArea.ifPresent(sa -> contentPane.add(ModernStatusBar.wrap(sa), BorderLayout.SOUTH));
@@ -198,6 +199,9 @@ public class WorkspaceFrame extends JFrame {
         MenuBuilder menuBuilder = new MenuBuilder(workspace.getEditorKit());
         JMenuBar menuBar = menuBuilder.buildMenu();
         installDarkMenuBar(menuBar);
+        if (!OSUtils.isOSX()) {
+            installTitleBarIcon(menuBar);
+        }
         setJMenuBar(menuBar);
         menuActions.addAll(menuBuilder.getActions());
     }
@@ -215,6 +219,16 @@ public class WorkspaceFrame extends JFrame {
         }
     }
 
+    private void installTitleBarIcon(JMenuBar menuBar) {
+        Icon icon = Icons.getIcon("protege-light-icon-16.png");
+        JLabel iconLabel = new JLabel(icon);
+        iconLabel.setOpaque(true);
+        iconLabel.setBackground(ModernProtegeTheme.MENU_BAR_BACKGROUND);
+        iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 8));
+        iconLabel.setToolTipText("Protege");
+        menuBar.add(iconLabel, 0);
+    }
+
     private void styleTopLevelMenu(JMenu menu) {
         menu.setOpaque(true);
         menu.setBackground(ModernProtegeTheme.MENU_BAR_BACKGROUND);
@@ -224,8 +238,8 @@ public class WorkspaceFrame extends JFrame {
         menu.getPopupMenu().setBorder(BorderFactory.createLineBorder(ModernProtegeTheme.BORDER));
     }
 
-    private java.util.List<Image> createFrameIcons() {
-        String[] iconNames = {"protege-light-icon-16.png", "protege-light-icon-32.png", "protege-light-icon-48.png", "protege-light-icon-128.png"};
+    private java.util.List<Image> createTaskbarIcons() {
+        String[] iconNames = {"protege-icon-16.png", "protege-icon-32.png", "protege-icon-48.png", "protege-icon-128.png"};
         java.util.List<Image> images = new java.util.ArrayList<>();
         for (String iconName : iconNames) {
             Icon icon = Icons.getIcon(iconName);
