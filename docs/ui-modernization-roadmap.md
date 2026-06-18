@@ -10,6 +10,7 @@
 ## Visual Polish Backlog
 
 1. Todo - Reduce the class hierarchy circular entity marker diameter to one third of the current size.
+2. Todo - Increase the breadcrumb/path font size for hierarchy paths such as KnowledgeNode > VerificationEvent.
 
 ## Framework Direction
 
