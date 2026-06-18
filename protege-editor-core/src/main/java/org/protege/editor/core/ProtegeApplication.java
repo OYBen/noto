@@ -274,14 +274,14 @@ public class ProtegeApplication implements BundleActivator {
 
 
     private static void loadDefaults() {
-        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "918B68");
-        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "6F8294");
-        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "6F8294");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "7A8B7B");
-        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "897484");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "7B8587");
-        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "917067");
-        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "A8645F");
+        ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_COLOR_KEY, "125F4B");
+        ProtegeProperties.getInstance().put(ProtegeProperties.PROPERTY_COLOR_KEY, "2B7561");
+        ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_COLOR_KEY, "2B7561");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATA_PROPERTY_COLOR_KEY, "4F846D");
+        ProtegeProperties.getInstance().put(ProtegeProperties.INDIVIDUAL_COLOR_KEY, "3D6F5F");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ONTOLOGY_COLOR_KEY, "2F5E52");
+        ProtegeProperties.getInstance().put(ProtegeProperties.ANNOTATION_PROPERTY_COLOR_KEY, "6A7F62");
+        ProtegeProperties.getInstance().put(ProtegeProperties.DATATYPE_COLOR_KEY, "7B8D6B");
 
         ProtegeProperties.getInstance().put(ProtegeProperties.CLASS_VIEW_CATEGORY, "Class");
         ProtegeProperties.getInstance().put(ProtegeProperties.OBJECT_PROPERTY_VIEW_CATEGORY, "Object property");
@@ -387,6 +387,8 @@ public class ProtegeApplication implements BundleActivator {
 
         if (flatLookAndFeel) {
             defaults.put("Button.arc", ModernProtegeTheme.CORNER_RADIUS);
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
             defaults.put("Component.arc", ModernProtegeTheme.CORNER_RADIUS);
             defaults.put("ProgressBar.arc", ModernProtegeTheme.CORNER_RADIUS);
             defaults.put("TextComponent.arc", ModernProtegeTheme.CORNER_RADIUS);
@@ -482,6 +484,15 @@ public class ProtegeApplication implements BundleActivator {
             defaults.put("Menu.selectionForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
             defaults.put("PopupMenu.background", ModernProtegeTheme.MENU_POPUP_BACKGROUND);
             defaults.put("PopupMenu.borderColor", ModernProtegeTheme.BORDER);
+            defaults.put("TitlePane.background", ModernProtegeTheme.TITLE_BAR_BACKGROUND);
+            defaults.put("TitlePane.foreground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("TitlePane.inactiveBackground", ModernProtegeTheme.TITLE_BAR_BACKGROUND);
+            defaults.put("TitlePane.inactiveForeground", ModernProtegeTheme.MENU_BAR_FOREGROUND);
+            defaults.put("TitlePane.buttonHoverBackground", ModernProtegeTheme.MENU_BAR_SELECTION);
+            defaults.put("TitlePane.buttonPressedBackground", ModernProtegeTheme.SELECTION);
+            defaults.put("TitlePane.closeHoverBackground", ModernProtegeTheme.DANGER);
+            defaults.put("TitlePane.closePressedBackground", ModernProtegeTheme.DANGER.darker());
+            defaults.put("RootPane.useWindowDecorations", true);
             applySharpTextRenderingDefaults(defaults);
         }
 

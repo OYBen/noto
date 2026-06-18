@@ -142,6 +142,7 @@ public class WorkspaceFrame extends JFrame {
             }
         }
         JMenu menu = new JMenu(name);
+        styleTopLevelMenu(menu);
         getJMenuBar().add(menu);
         return menu;
     }
@@ -160,7 +161,7 @@ public class WorkspaceFrame extends JFrame {
         if (title != null) {
             setTitle(title);
         }
-        setIconImage(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
+        setIconImages(createFrameIcons());
 
         Optional<JComponent> statusArea = workspace.getStatusArea();
         statusArea.ifPresent(sa -> contentPane.add(ModernStatusBar.wrap(sa), BorderLayout.SOUTH));
@@ -206,6 +207,21 @@ public class WorkspaceFrame extends JFrame {
         menu.setBorder(BorderFactory.createEmptyBorder(4, 7, 4, 7));
         menu.getPopupMenu().setBackground(ModernProtegeTheme.MENU_POPUP_BACKGROUND);
         menu.getPopupMenu().setBorder(BorderFactory.createLineBorder(ModernProtegeTheme.BORDER));
+    }
+
+    private java.util.List<Image> createFrameIcons() {
+        String[] iconNames = {"protege-icon-16.png", "protege-icon-32.png", "protege-icon-48.png", "protege-icon-128.png"};
+        java.util.List<Image> images = new java.util.ArrayList<>();
+        for (String iconName : iconNames) {
+            Icon icon = Icons.getIcon(iconName);
+            if (icon instanceof ImageIcon) {
+                images.add(((ImageIcon) icon).getImage());
+            }
+        }
+        if (images.isEmpty()) {
+            images.add(((ImageIcon) Icons.getIcon("logo32.gif")).getImage());
+        }
+        return images;
     }
     
 
