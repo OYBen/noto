@@ -328,11 +328,14 @@ public class ProtegeApplication implements BundleActivator {
                 lafClsName = ProtegeProperties.FLAT_LIGHT_LAF_NAME;
                 p.putString(LOOK_AND_FEEL_CLASS_NAME, lafClsName);
             }
+            if (!OSUtils.isOSX() && !lafClsName.startsWith("com.formdev.flatlaf.")) {
+                lafClsName = ProtegeProperties.FLAT_LIGHT_LAF_NAME;
+                p.putString(LOOK_AND_FEEL_CLASS_NAME, lafClsName);
+            }
 
             try {
                 // This is a workaround for some OSGi "feature".  From here http://adamish.com/blog/archives/156.
                 // Force the Look & Feel to be instantiated.
-                UIDefaults defaults = UIManager.getDefaults();
                 if (lafClsName.equals(PlasticLookAndFeel.class.getName())) {
                     // Truly strange.  If we don't do this then the LAF cannot be found.
                     PlasticLookAndFeel.setCurrentTheme(new ProtegePlasticTheme());
@@ -350,7 +353,8 @@ public class ProtegeApplication implements BundleActivator {
                     UIManager.setLookAndFeel(lookAndFeel);
                 }
                 logger.info("Look&Feel: {} ({})", UIManager.getLookAndFeel().getName(), UIManager.getLookAndFeel().getClass().getName());
-                setupDefaults(defaults, lafClsName);
+                setupDefaults(UIManager.getLookAndFeelDefaults(), lafClsName);
+                setupDefaults(UIManager.getDefaults(), lafClsName);
 
             } catch (Exception e) {
                 logger.error("An error occurred during Look&Feel initialization", e);
