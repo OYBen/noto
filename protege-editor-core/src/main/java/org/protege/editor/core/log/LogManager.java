@@ -9,6 +9,7 @@ import ch.qos.logback.core.Context;
 
 import org.protege.editor.core.FileUtils;
 import org.protege.editor.core.ui.action.TimestampOutputAction;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
@@ -69,10 +71,15 @@ public class LogManager {
 
         JComponent holder = new JPanel(new BorderLayout(7, 7));
         holder.setPreferredSize(new Dimension(800, 600));
+        holder.setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
+        holder.setOpaque(true);
+        holder.setBackground(ModernProtegeTheme.SURFACE);
         JScrollPane sp = new JScrollPane(logView.asJComponent());
         sp.getVerticalScrollBar().setUnitIncrement(15);
+        sp.setBorder(BorderFactory.createLineBorder(ModernProtegeTheme.BORDER));
         holder.add(sp);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        buttonPanel.setOpaque(false);
         JButton clearLogButton = new JButton("Clear log");
         clearLogButton.setToolTipText("Remove all log messages");
         clearLogButton.addActionListener(e -> clearLogView());
@@ -89,12 +96,16 @@ public class LogManager {
         buttonPanel.add(preferencesButton);
         buttonPanel.add(timeStampButton);
         buttonPanel.add(clearLogButton);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
         holder.add(buttonPanel, BorderLayout.SOUTH);
         
-        JOptionPane op = new JOptionPane(holder, JOptionPane.PLAIN_MESSAGE);
-        logViewDialog = op.createDialog(null, "Log");
+        logViewDialog = new JDialog((Frame) null, "Log", false);
+        logViewDialog.getContentPane().setLayout(new BorderLayout());
+        logViewDialog.getContentPane().add(holder, BorderLayout.CENTER);
         logViewDialog.setModal(false);
         logViewDialog.setResizable(true);
+        logViewDialog.pack();
+        logViewDialog.setLocationRelativeTo(null);
         logViewDialog.addComponentListener(new ComponentAdapter() {
         	@Override
         	public void componentHidden(ComponentEvent e) {

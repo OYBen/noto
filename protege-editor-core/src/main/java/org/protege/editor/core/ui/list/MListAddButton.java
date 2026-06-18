@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class MListAddButton extends MListButton {
 
     public MListAddButton(ActionListener actionListener) {
-        super("Add", ModernProtegeTheme.SUCCESS, actionListener);
+        super("Add", ModernProtegeTheme.SELECTION, actionListener);
     }
 
 

@@ -6,6 +6,7 @@ import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Context;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -60,7 +61,10 @@ public class LogViewImpl extends AppenderBase<ILoggingEvent>
 
 	public LogViewImpl() {
 		text = new JTextPane();
-		text.setFont(new Font("monospaced", Font.PLAIN, 12));
+		text.setFont(createModernLogFont());
+		text.setBackground(ModernProtegeTheme.SURFACE);
+		text.setForeground(ModernProtegeTheme.TEXT);
+		text.setBorder(BorderFactory.createEmptyBorder(10, 12, 10, 12));
 		editorKit = new LogEditorKit();
 		text.setEditorKit(editorKit);
 		doc = new LogStyledDocument();
@@ -80,6 +84,18 @@ public class LogViewImpl extends AppenderBase<ILoggingEvent>
 		applyPreferences();
 	}
 
+	private static Font createModernLogFont() {
+		String[] families = {"Cascadia Mono", "Consolas", "JetBrains Mono", Font.MONOSPACED};
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		java.util.List<String> availableFamilies = Arrays.asList(graphicsEnvironment.getAvailableFontFamilyNames());
+		for (String family : families) {
+			if (Font.MONOSPACED.equals(family) || availableFamilies.contains(family)) {
+				return new Font(family, Font.PLAIN, 13);
+			}
+		}
+		return new Font(Font.MONOSPACED, Font.PLAIN, 13);
+	}
+
 	public boolean isLineWrap() {
 		return editorKit.isLineWrap();
 	}
@@ -95,7 +111,7 @@ public class LogViewImpl extends AppenderBase<ILoggingEvent>
 			Color foreground = LOG_DEFAULT_FOREGROUND_COLORS_[i];
 			setForeground(styles[i], foreground, foregrounds);
 		}
-		setForeground(commentStyle, Color.GRAY, foregrounds);
+		setForeground(commentStyle, ModernProtegeTheme.MUTED_TEXT, foregrounds);
 	}
 	
 	private void setForeground(Style style, Color defaultColor, Map<String, Color> overriden) {		

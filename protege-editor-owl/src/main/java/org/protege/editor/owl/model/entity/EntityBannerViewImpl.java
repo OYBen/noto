@@ -1,6 +1,7 @@
 package org.protege.editor.owl.model.entity;
 
 import org.protege.editor.core.ui.menu.MenuButton;
+import org.protege.editor.owl.ui.renderer.ScaledIcon;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class EntityBannerViewImpl implements EntityBannerView {
 
     @Override
     public void setIcon(@Nonnull Icon icon) {
-        entityLabel.setIcon(checkNotNull(icon));
+        entityLabel.setIcon(ScaledIcon.entityMarker(checkNotNull(icon)));
     }
 
     @Override
