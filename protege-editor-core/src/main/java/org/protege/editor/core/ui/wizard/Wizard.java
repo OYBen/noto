@@ -1,5 +1,7 @@
 package org.protege.editor.core.ui.wizard;
 
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -445,9 +447,20 @@ public class Wizard extends WindowAdapter implements PropertyChangeListener {
         //  the next button and the cancel button.
 
         buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.setOpaque(true);
+        buttonPanel.setBackground(ModernProtegeTheme.SURFACE);
+        buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ModernProtegeTheme.BORDER));
+        cardPanel.setOpaque(true);
+        cardPanel.setBackground(ModernProtegeTheme.SURFACE);
+        wizardDialog.getContentPane().setBackground(ModernProtegeTheme.SURFACE);
+        nextButton.putClientProperty("JButton.buttonType", "default");
+        nextButton.setBackground(ModernProtegeTheme.SELECTION);
+        nextButton.setForeground(Color.WHITE);
+        backButton.setBackground(ModernProtegeTheme.SURFACE);
+        cancelButton.setBackground(ModernProtegeTheme.SURFACE);
         // buttonPanel.add(separator, BorderLayout.NORTH);
 
-        buttonBox.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        buttonBox.setBorder(BorderFactory.createEmptyBorder(14, 16, 14, 16));
         buttonBox.add(backButton);
         buttonBox.add(Box.createHorizontalStrut(10));
         buttonBox.add(nextButton);

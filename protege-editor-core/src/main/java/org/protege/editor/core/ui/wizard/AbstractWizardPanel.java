@@ -3,6 +3,7 @@ package org.protege.editor.core.ui.wizard;
 import org.protege.editor.core.ModelManager;
 import org.protege.editor.core.editorkit.EditorKit;
 import org.protege.editor.core.ui.util.Icons;
+import org.protege.editor.core.ui.view.ModernProtegeTheme;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -84,10 +85,13 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 
     final protected void createUI() {
         backgroundImage = Icons.getIcon("logo.wizard.png");
-        setLayout(new BorderLayout(7, 7));
-        marginPanel.setPreferredSize(new Dimension(150, 400));
+        setLayout(new BorderLayout(0, 0));
+        setBackground(ModernProtegeTheme.SURFACE);
+        setOpaque(true);
+        marginPanel.setPreferredSize(new Dimension(170, 400));
         add(marginPanel, BorderLayout.WEST);
-        marginPanel.setOpaque(false);
+        marginPanel.setOpaque(true);
+        marginPanel.setBackground(ModernProtegeTheme.APP_BACKGROUND);
         marginPanel.setEnabled(false);
         marginPanel.add(marginLabel, BorderLayout.NORTH);
         marginLabel.setBorder(BorderFactory.createEmptyBorder(30, 8, 0, 0));
@@ -97,20 +101,22 @@ public abstract class AbstractWizardPanel extends WizardPanel {
 //        instructionArea.setLineWrap(true);
 //        instructionArea.setEditable(false);
 
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JPanel containerPanel = new JPanel(new BorderLayout(7, 7));
+        setBorder(BorderFactory.createEmptyBorder());
+        JPanel containerPanel = new JPanel(new BorderLayout(10, 10));
         add(containerPanel);
         containerPanel.setOpaque(false);
+        containerPanel.setBorder(BorderFactory.createEmptyBorder(28, 28, 22, 28));
 
         JLabel label = new JLabel(title);
         label.setOpaque(false);
-        label.setFont(label.getFont().deriveFont(Font.BOLD, 14.0f));
+        label.setForeground(ModernProtegeTheme.TEXT);
+        label.setFont(label.getFont().deriveFont(Font.BOLD, 20.0f));
         containerPanel.add(label, BorderLayout.NORTH);
 
         JPanel contentAndInstructionHolder = new HolderPanel();
         contentAndInstructionHolder.add(instructionArea, BorderLayout.NORTH);
         JPanel contentBorderPanel = new JPanel(new BorderLayout());
-        contentBorderPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 0, 0));
+        contentBorderPanel.setBorder(BorderFactory.createEmptyBorder(18, 0, 0, 0));
         contentBorderPanel.add(contentHolder);
         contentBorderPanel.setOpaque(false);
         contentHolder.setOpaque(false);
